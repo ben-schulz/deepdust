@@ -1,0 +1,2 @@
+class NamedGraph:
+    pass
