@@ -29,4 +29,7 @@ class JsonLdValue:
         pass
 
     
+class JsonLdList:
 
+    def __init__(self, items):
+        pass
