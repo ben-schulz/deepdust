@@ -22,7 +22,7 @@ class TestNode(unittest.TestCase):
         node = n.Node.iri(name)
 
         self.assertIsNotNone(node)
-        self.assertTrue(n.NodeType.IRI, node.nodetype)
+        self.assertEqual(n.NodeType.IRI, node.nodetype)
 
 
     def test_may_be_blank(self):
@@ -31,7 +31,7 @@ class TestNode(unittest.TestCase):
         node = n.Node.blank(name)
 
         self.assertIsNotNone(node)
-        self.assertTrue(n.NodeType.BLANK, node.nodetype)
+        self.assertEqual(n.NodeType.BLANK, node.nodetype)
 
     def test_may_be_list(self):
 
@@ -39,3 +39,4 @@ class TestNode(unittest.TestCase):
         node = n.Node.listnode(l)
 
         self.assertIsNotNone(node)
+        self.assertEqual(n.NodeType.LIST, node.nodetype)
