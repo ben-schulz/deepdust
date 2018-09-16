@@ -1,20 +1,28 @@
 import unittest
 
-import deepdust.graph.names as N
+import deepdust.syntax.concrete as syntax
+import deepdust.graph.names as names
 
 class TestNames(unittest.TestCase):
 
     def test_blanknode_sets_isblank(self):
 
-        name = N.GraphName.blank("some_id")
+        name = names.GraphName.blank("foo")
 
         self.assertTrue(name.is_blank())
         self.assertFalse(name.is_iri())
 
-
     def test_iri_sets_isiri(self):
 
-        name = N.GraphName.iri("http://www.example.com")
+        name = names.GraphName.iri("http://www.example.com")
 
         self.assertTrue(name.is_iri())
         self.assertFalse(name.is_blank())
+
+
+    def test_blanknode_has_spec_prefix(self):
+
+        name = names.GraphName.blank("foo")
+        self.assertTrue(str(name)
+                        .startswith(
+                            syntax.BLANK_NODE_ID_PREFIX))

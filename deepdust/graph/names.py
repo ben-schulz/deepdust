@@ -1,6 +1,6 @@
+import deepdust.syntax.concrete as syntax
 
 class GraphName:
-
     _blank_type = 'blank'
     _iri_type = 'iri'
 
@@ -12,6 +12,14 @@ class GraphName:
 
         if 'nametype' in kwargs:
             self.idtype = kwargs['nametype']
+
+
+    def __str__(self):
+
+        if self.is_blank():
+            return syntax.BLANK_NODE_ID_PREFIX + self.graphid
+
+        return self.graphid
 
 
     def is_blank(self):
