@@ -1,8 +1,28 @@
+from enum import Enum
+
+class NodeType(Enum):
+    VALUE = 0
+    IRI = 1
+    BLANK = 2
+
+
 class Node:
 
-    def __init__(self):
-        pass
+    def __init__(self, ntype):
+
+        self.nodetype = ntype
+
+
+    def iri(v):
+
+        return Node(NodeType.IRI)
+
+
+    def blank(v):
+
+        return Node(NodeType.BLANK)
+
 
     def value(v):
 
-        return Node()
+        return Node(NodeType.VALUE)
