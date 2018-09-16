@@ -6,6 +6,6 @@ class TestNames(unittest.TestCase):
 
     def test_blanknode_sets_isblank(self):
 
-        name = N.GraphName.blankid("some_id")
+        name = N.GraphName.blank("some_id")
 
         self.assertTrue(name.isblank)

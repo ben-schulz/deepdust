@@ -8,4 +8,4 @@ def abs_path_to_relative(relpath):
 
 sys.path.insert(0, abs_path_to_relative('../graph'))
 
-import deepdust.graph.named
+import deepdust.graph.names

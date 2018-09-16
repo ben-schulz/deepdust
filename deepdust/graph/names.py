@@ -15,5 +15,5 @@ class GraphName:
         return GraphName._blank_type == self.idtype
 
 
-    def blankid(nodeid):
+    def blank(nodeid):
         return GraphName(nodeid)
