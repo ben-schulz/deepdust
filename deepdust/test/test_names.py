@@ -3,6 +3,7 @@ import unittest
 import deepdust.syntax.concrete as syntax
 import deepdust.graph.names as names
 
+
 class TestNames(unittest.TestCase):
 
     def test_blanknode_sets_isblank(self):
@@ -11,6 +12,7 @@ class TestNames(unittest.TestCase):
 
         self.assertTrue(name.is_blank())
         self.assertFalse(name.is_iri())
+
 
     def test_iri_sets_isiri(self):
 

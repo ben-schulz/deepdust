@@ -9,3 +9,8 @@ def abs_path_to_relative(relpath):
 sys.path.insert(0, abs_path_to_relative('../graph'))
 
 import deepdust.graph.names
+import deepdust.graph.namedgraph
+import deepdust.graph.node
+
+import deepdust.syntax.concrete
+import deepdust.syntax.value
