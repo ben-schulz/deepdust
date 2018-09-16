@@ -8,4 +8,13 @@ class TestNames(unittest.TestCase):
 
         name = N.GraphName.blank("some_id")
 
-        self.assertTrue(name.isblank)
+        self.assertTrue(name.is_blank())
+        self.assertFalse(name.is_iri())
+
+
+    def test_iri_sets_isiri(self):
+
+        name = N.GraphName.iri("http://www.example.com")
+
+        self.assertTrue(name.is_iri())
+        self.assertFalse(name.is_blank())
