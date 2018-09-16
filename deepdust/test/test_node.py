@@ -4,6 +4,7 @@ import deepdust.syntax.value as values
 import deepdust.graph.names as names
 import deepdust.graph.node as n
 
+
 class TestNode(unittest.TestCase):
 
 
