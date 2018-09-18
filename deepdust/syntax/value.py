@@ -1,3 +1,5 @@
+import math
+
 import deepdust.syntax.concrete as syntax
 
 class XsdType:
@@ -10,8 +12,11 @@ class XsdType:
 
         return '{}{}'.format(syntax.TYPE_PREFIX, self.name)
 
+
 xsd_string = XsdType(syntax.STRING_TYPE_KEYWORD)
 xsd_bool = XsdType(syntax.BOOL_TYPE_KEYWORD)
+xsd_double = XsdType(syntax.DOUBLE_TYPE_KEYWORD)
+xsd_int = XsdType(syntax.INT_TYPE_KEYWORD)
 
 class JsonLdValue:
 
@@ -27,7 +32,6 @@ class JsonLdValue:
 
 
     class JsonBool:
-
 
         def __init__(self, value):
 
@@ -60,9 +64,15 @@ class JsonLdValue:
             return self.string
 
 
-    def string(s):
-        return JsonLdValue(JsonLdValue.JsonString(s),
-                           xsd_string)
+    class JsonNumber:
+
+        def __init__(self, x):
+
+            self.number = x
+
+        def __str__(self):
+
+            return str(self.number)
 
 
     def __str__(self):
@@ -77,3 +87,26 @@ class JsonLdList:
 
 false = JsonLdValue(JsonLdValue.JsonBool(False), xsd_bool)
 true = JsonLdValue(JsonLdValue.JsonBool(True), xsd_bool)
+
+
+def string(s):
+    return JsonLdValue(JsonLdValue.JsonString(s), xsd_string)
+
+
+def number(n):
+
+    try:
+        _n = int(n)
+        xsd_type = xsd_int
+
+    except ValueError:
+
+        _n = float(n)
+
+        if math.floor(_n) < _n:
+            xsd_type = xsd_double
+        else:
+          _n = int(math.floor(_n))
+          xsd_type = xsd_int
+
+    return JsonLdValue(JsonLdValue.JsonNumber(_n), xsd_type)
