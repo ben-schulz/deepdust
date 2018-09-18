@@ -18,3 +18,12 @@ class TestJsonLdValue(unittest.TestCase):
         true = value.JsonLdValue.true
 
         self.assertEqual(syntax.TRUE, str(true))
+
+
+    def test_string_is_typedvalue_xsd_string(self):
+
+        stringvalue = 'ok'
+        s = value.JsonLdValue.string(stringvalue)
+
+        self.assertEqual(stringvalue, str(s))
+        self.assertEqual('xsd:string', s.xsdtype)

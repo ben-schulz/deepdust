@@ -2,6 +2,17 @@ import deepdust.syntax.concrete as syntax
 
 class JsonLdValue:
 
+    def __init__(self, value, xsdtype):
+
+        self.value = value
+        self.xsdtype = xsdtype
+
+
+    def __str__(self):
+
+        return str(self.value)
+
+
     class JsonBool:
 
         def __init__(self, value):
@@ -25,8 +36,23 @@ class JsonLdValue:
     false = JsonBool(False)
     true = JsonBool(True)
 
-    def __init__(self):
-        pass
+    class JsonString:
+
+        def __init__(self, string):
+
+            self.string = string
+
+        def __str__(self):
+            return self.string
+
+
+    def string(s):
+        return JsonLdValue(JsonLdValue.JsonString(s),
+                           'xsd:string')
+
+
+    def __str__(self):
+        return str(self.value)
 
     
 class JsonLdList:
