@@ -12,7 +12,7 @@ class TestEdge(unittest.TestCase):
     def test_has_source_and_destination(self):
 
         source = n.Node.iri('http://www.example.com')
-        dest = n.Node.value(v.JsonLdValue.true)
+        dest = n.Node.value(v.true)
         prop = names.GraphName.iri('http://www.example.org')
 
         edge = e.Edge(source, dest, prop)
@@ -24,7 +24,7 @@ class TestEdge(unittest.TestCase):
     def test_has_property_identifier(self):
 
         source = n.Node.iri('http://www.example.com')
-        dest = n.Node.value(v.JsonLdValue.true)
+        dest = n.Node.value(v.true)
         prop = names.GraphName.iri('http://www.example.org')
 
         edge = e.Edge(source, dest, prop)
@@ -34,8 +34,8 @@ class TestEdge(unittest.TestCase):
 
     def test_raise_error_on_invalid_source(self):
 
-        source = n.Node.value(v.JsonLdValue.false)
-        dest = n.Node.value(v.JsonLdValue.true)
+        source = n.Node.value(v.false)
+        dest = n.Node.value(v.true)
         prop = names.GraphName.iri('http://www.example.org')
 
         try:

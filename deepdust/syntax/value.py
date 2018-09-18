@@ -1,5 +1,18 @@
 import deepdust.syntax.concrete as syntax
 
+class XsdType:
+
+    def __init__(self, name):
+
+        self.name = name
+
+    def __str__(self):
+
+        return '{}{}'.format(syntax.TYPE_PREFIX, self.name)
+
+xsd_string = XsdType(syntax.STRING_TYPE_KEYWORD)
+xsd_bool = XsdType(syntax.BOOL_TYPE_KEYWORD)
+
 class JsonLdValue:
 
     def __init__(self, value, xsdtype):
@@ -15,15 +28,19 @@ class JsonLdValue:
 
     class JsonBool:
 
+
         def __init__(self, value):
 
             self.value = value
 
+
         def true():
             return JsonBool(True)
 
+
         def false():
             return JsonBool(False)    
+
 
         def __str__(self):
 
@@ -32,10 +49,7 @@ class JsonLdValue:
 
             return syntax.FALSE
 
-
-    false = JsonBool(False)
-    true = JsonBool(True)
-
+        
     class JsonString:
 
         def __init__(self, string):
@@ -48,7 +62,7 @@ class JsonLdValue:
 
     def string(s):
         return JsonLdValue(JsonLdValue.JsonString(s),
-                           'xsd:string')
+                           xsd_string)
 
 
     def __str__(self):
@@ -59,3 +73,7 @@ class JsonLdList:
 
     def __init__(self, items):
         pass
+
+
+false = JsonLdValue(JsonLdValue.JsonBool(False), xsd_bool)
+true = JsonLdValue(JsonLdValue.JsonBool(True), xsd_bool)

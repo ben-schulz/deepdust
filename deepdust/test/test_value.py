@@ -8,16 +8,25 @@ class TestJsonLdValue(unittest.TestCase):
 
     def test_falsevalue_has_spec_string_value(self):
 
-        false = value.JsonLdValue.false
+        false = value.false
 
         self.assertEqual(syntax.FALSE, str(false))
 
 
     def test_truevalue_has_spec_true_value(self):
 
-        true = value.JsonLdValue.true
+        true = value.true
 
         self.assertEqual(syntax.TRUE, str(true))
+
+
+    def test_bool_has_typedvalue_xsd_bool(self):
+
+        false = value.false
+        true = value.true
+        
+        self.assertEqual('xsd:boolean', str(false.xsdtype))
+        self.assertEqual('xsd:boolean', str(true.xsdtype))
 
 
     def test_string_is_typedvalue_xsd_string(self):
@@ -26,4 +35,4 @@ class TestJsonLdValue(unittest.TestCase):
         s = value.JsonLdValue.string(stringvalue)
 
         self.assertEqual(stringvalue, str(s))
-        self.assertEqual('xsd:string', s.xsdtype)
+        self.assertEqual('xsd:string', str(s.xsdtype))

@@ -10,7 +10,7 @@ class TestNode(unittest.TestCase):
 
     def test_may_be_jsonld_value(self):
 
-        v = values.JsonLdValue.false
+        v = values.false
         node = n.Node.value(v)
 
         self.assertIsNotNone(node)
