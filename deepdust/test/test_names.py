@@ -28,3 +28,15 @@ class TestNames(unittest.TestCase):
         self.assertTrue(str(name)
                         .startswith(
                             syntax.BLANK_NODE_ID_PREFIX))
+
+    def test_name_init_raises_on_not_iri_or_blanknode(self):
+
+        try:
+            names.GraphName("foo")
+
+            msg = ('Expected {} raised.'
+                   .format(names.NameError.__name__))
+            self.assertTrue(False, msg);
+
+        except names.NameError:
+            pass
