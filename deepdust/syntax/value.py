@@ -20,10 +20,10 @@ xsd_int = XsdType(syntax.INT_TYPE_KEYWORD)
 
 class JsonLdValue:
 
-    def __init__(self, value, xsdtype):
+    def __init__(self, value, dtype):
 
         self.value = value
-        self.xsdtype = xsdtype
+        self.dtype = dtype
 
 
     def __str__(self):

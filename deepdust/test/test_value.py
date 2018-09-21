@@ -25,8 +25,8 @@ class TestJsonLdValue(unittest.TestCase):
         false = value.false
         true = value.true
         
-        self.assertEqual('xsd:boolean', str(false.xsdtype))
-        self.assertEqual('xsd:boolean', str(true.xsdtype))
+        self.assertEqual('xsd:boolean', str(false.dtype))
+        self.assertEqual('xsd:boolean', str(true.dtype))
 
 
     def test_string_is_type_xsd_string(self):
@@ -35,7 +35,7 @@ class TestJsonLdValue(unittest.TestCase):
         s = value.string(data)
 
         self.assertEqual(data, str(s))
-        self.assertEqual('xsd:string', str(s.xsdtype))
+        self.assertEqual('xsd:string', str(s.dtype))
 
 
     def test_number_has_equal_integer_value(self):
@@ -59,7 +59,7 @@ class TestJsonLdValue(unittest.TestCase):
         data = '2.713'
         n = value.number(data)
 
-        self.assertEqual('xsd:double', str(n.xsdtype))
+        self.assertEqual('xsd:double', str(n.dtype))
 
 
     def test_integral_number_is_xsd_integer(self):
@@ -68,7 +68,7 @@ class TestJsonLdValue(unittest.TestCase):
         n = value.number(data)
 
         self.assertEqual(255, int(str(n)))
-        self.assertEqual('xsd:integer', str(n.xsdtype))
+        self.assertEqual('xsd:integer', str(n.dtype))
 
         
     def test_number_is_integer_if_zero_fractional_part(self):
@@ -77,6 +77,6 @@ class TestJsonLdValue(unittest.TestCase):
         n = value.number(data)
 
         self.assertEqual(255, int(str(n)))
-        self.assertEqual('xsd:integer', str(n.xsdtype))
+        self.assertEqual('xsd:integer', str(n.dtype))
 
 
