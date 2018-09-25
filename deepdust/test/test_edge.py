@@ -3,7 +3,7 @@ import unittest
 import deepdust.graph.edge as e
 import deepdust.graph.node as n
 import deepdust.graph.names as names
-import deepdust.syntax.value as v
+import deepdust.datamodel.value as v
 
 
 class TestEdge(unittest.TestCase):

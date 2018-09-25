@@ -1,6 +1,6 @@
 import unittest
 
-import deepdust.syntax.value as values
+import deepdust.datamodel.value as values
 import deepdust.graph.names as names
 import deepdust.graph.node as n
 

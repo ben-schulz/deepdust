@@ -1,7 +1,7 @@
 import unittest
 
 import deepdust.syntax.concrete as syntax
-import deepdust.syntax.value as value
+import deepdust.datamodel.value as value
 
 import deepdust.graph.names as names
 
