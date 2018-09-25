@@ -10,7 +10,7 @@ class XsdType:
 
     def __str__(self):
 
-        return '{}{}'.format(syntax.TYPE_PREFIX, self.name)
+        return '{}{}'.format(syntax.XSD_TYPE_PREFIX, self.name)
 
 
 xsd_string = XsdType(syntax.STRING_TYPE_KEYWORD)

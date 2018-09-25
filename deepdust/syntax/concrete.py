@@ -1,4 +1,4 @@
-TYPE_PREFIX = 'xsd:'
+XSD_TYPE_PREFIX = 'xsd:'
 
 STRING_TYPE_KEYWORD = 'string'
 BOOL_TYPE_KEYWORD = 'boolean'
