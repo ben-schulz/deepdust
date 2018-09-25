@@ -3,7 +3,7 @@ import unittest
 import deepdust.syntax.concrete as syntax
 import deepdust.datamodel.value as value
 
-import deepdust.graph.names as names
+import deepdust.datamodel.names as names
 
 
 class TestJsonLdValue(unittest.TestCase):

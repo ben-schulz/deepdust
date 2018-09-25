@@ -1,4 +1,4 @@
-import deepdust.graph.node as node
+import deepdust.datamodel.node as node
 
 class Edge:
 

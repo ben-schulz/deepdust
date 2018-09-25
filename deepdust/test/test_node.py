@@ -1,8 +1,8 @@
 import unittest
 
 import deepdust.datamodel.value as values
-import deepdust.graph.names as names
-import deepdust.graph.node as n
+import deepdust.datamodel.names as names
+import deepdust.datamodel.node as n
 
 
 class TestNode(unittest.TestCase):

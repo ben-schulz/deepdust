@@ -1,7 +1,7 @@
 import math
 
 import deepdust.syntax.concrete as syntax
-import deepdust.graph.names as names
+import deepdust.datamodel.names as names
 
 class Type:
 

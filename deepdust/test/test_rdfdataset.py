@@ -1,6 +1,6 @@
 import unittest
 
-import deepdust.graph.rdfdataset as rdf
+import deepdust.datamodel.rdfdataset as rdf
 
 class TestNamedGraph(unittest.TestCase):
 
