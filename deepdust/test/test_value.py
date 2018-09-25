@@ -3,6 +3,8 @@ import unittest
 import deepdust.syntax.concrete as syntax
 import deepdust.syntax.value as value
 
+import deepdust.graph.names as names
+
 
 class TestJsonLdValue(unittest.TestCase):
 
@@ -80,3 +82,27 @@ class TestJsonLdValue(unittest.TestCase):
         self.assertEqual('xsd:integer', str(n.dtype))
 
 
+    def test_typedvalue_raises_error_on_type_not_iri(self):
+
+        val = 'ok wow'
+        typ = 'not an iri'
+
+        try:
+            x = value.typed(val, typ)
+
+            msg = ("Expected '{}' raised."
+                   .format(value.JsonLdValueError.__name__))
+            self.assertTrue(False, msg)
+
+        except value.JsonLdValueError:
+            pass
+
+
+    def test_typedvalue_has_iri_as_typed_member(self):
+
+        val = 'ok wow'
+        typ = 'http://www.example.com/ok#wow'
+
+        x = value.typed(val, names.Iri(typ))
+
+        self.assertTrue(isinstance(x.dtype, names.Iri))

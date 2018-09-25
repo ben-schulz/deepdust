@@ -1,6 +1,7 @@
 import math
 
 import deepdust.syntax.concrete as syntax
+import deepdust.graph.names as names
 
 class XsdType:
 
@@ -31,7 +32,7 @@ class JsonLdValue:
         return str(self.value)
 
 
-    class JsonBool:
+    class Bool:
 
         def __init__(self, value):
 
@@ -39,11 +40,11 @@ class JsonLdValue:
 
 
         def true():
-            return JsonBool(True)
+            return Bool(True)
 
 
         def false():
-            return JsonBool(False)    
+            return Bool(False)    
 
 
         def __str__(self):
@@ -54,7 +55,7 @@ class JsonLdValue:
             return syntax.FALSE
 
         
-    class JsonString:
+    class String:
 
         def __init__(self, string):
 
@@ -64,7 +65,7 @@ class JsonLdValue:
             return self.string
 
 
-    class JsonNumber:
+    class Number:
 
         def __init__(self, x):
 
@@ -78,6 +79,14 @@ class JsonLdValue:
     def __str__(self):
         return str(self.value)
 
+
+    class Typed:
+
+        def __init__(self, val, typ):
+
+            self.val = val
+            self.typ = typ
+
     
 class JsonLdList:
 
@@ -85,12 +94,12 @@ class JsonLdList:
         pass
 
 
-false = JsonLdValue(JsonLdValue.JsonBool(False), xsd_bool)
-true = JsonLdValue(JsonLdValue.JsonBool(True), xsd_bool)
+false = JsonLdValue(JsonLdValue.Bool(False), xsd_bool)
+true = JsonLdValue(JsonLdValue.Bool(True), xsd_bool)
 
 
 def string(s):
-    return JsonLdValue(JsonLdValue.JsonString(s), xsd_string)
+    return JsonLdValue(JsonLdValue.String(s), xsd_string)
 
 
 def number(n):
@@ -109,4 +118,27 @@ def number(n):
           _n = int(math.floor(_n))
           xsd_type = xsd_int
 
-    return JsonLdValue(JsonLdValue.JsonNumber(_n), xsd_type)
+    return JsonLdValue(JsonLdValue.Number(_n), xsd_type)
+
+
+def typed(v, t):
+
+    if not isinstance(t, names.Iri):
+        raise JsonLdValueError(t)
+
+    return JsonLdValue(JsonLdValue.Typed(v, t), t)
+
+
+class JsonLdValueError(Exception):
+
+    def __init__(self, typearg):
+
+        self.typearg = typearg
+
+        msg = ("'{}' is not a valid type for '{}'."
+               .format(
+                   type(typearg).__name__,
+                   JsonLdValue.Typed.__name__
+                   ))
+
+        super(JsonLdValueError, self).__init__(msg)
