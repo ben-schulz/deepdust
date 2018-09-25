@@ -23,6 +23,7 @@ xsd_bool = Type.xsd(syntax.BOOL_TYPE_KEYWORD)
 xsd_double = Type.xsd(syntax.DOUBLE_TYPE_KEYWORD)
 xsd_int = Type.xsd(syntax.INT_TYPE_KEYWORD)
 
+
 class JsonLdValue:
 
     def __init__(self, value, dtype):
@@ -133,7 +134,7 @@ def typed(v, t):
     return JsonLdValue(JsonLdValue.Typed(v, t), t)
 
 
-class JsonLdValueError(Exception):
+class JsonLdValueError(TypeError):
 
     def __init__(self, typearg):
 

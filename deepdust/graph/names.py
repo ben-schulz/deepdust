@@ -68,7 +68,7 @@ class GraphName:
         return GraphName(iri)
 
 
-class NameError(Exception):
+class NameError(TypeError):
 
     def __init__(self, typearg):
 
