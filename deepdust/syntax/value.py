@@ -11,13 +11,17 @@ class Type:
 
     def __str__(self):
 
-        return '{}{}'.format(syntax.XSD_TYPE_PREFIX, self.name)
+        return '{}'.format(self.name)
+
+    def xsd(name):
+
+        return Type(syntax.XSD_TYPE_PREFIX + name)
 
 
-xsd_string = Type(syntax.STRING_TYPE_KEYWORD)
-xsd_bool = Type(syntax.BOOL_TYPE_KEYWORD)
-xsd_double = Type(syntax.DOUBLE_TYPE_KEYWORD)
-xsd_int = Type(syntax.INT_TYPE_KEYWORD)
+xsd_string = Type.xsd(syntax.STRING_TYPE_KEYWORD)
+xsd_bool = Type.xsd(syntax.BOOL_TYPE_KEYWORD)
+xsd_double = Type.xsd(syntax.DOUBLE_TYPE_KEYWORD)
+xsd_int = Type.xsd(syntax.INT_TYPE_KEYWORD)
 
 class JsonLdValue:
 
