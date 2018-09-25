@@ -93,10 +93,10 @@ class JsonLdValue:
             self.typ = typ
 
     
-class JsonLdList:
+    class List:
 
-    def __init__(self, items):
-        pass
+        def __init__(self, items):
+            pass
 
 
 false = JsonLdValue(JsonLdValue.Bool(False), xsd_bool)

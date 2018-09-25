@@ -36,7 +36,7 @@ class TestNode(unittest.TestCase):
 
     def test_may_be_list(self):
 
-        l = values.JsonLdList(['item0', 'item1'])
+        l = values.JsonLdValue.List(['item0', 'item1'])
         node = n.Node.listnode(l)
 
         self.assertIsNotNone(node)
