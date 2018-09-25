@@ -3,7 +3,7 @@ import math
 import deepdust.syntax.concrete as syntax
 import deepdust.graph.names as names
 
-class XsdType:
+class Type:
 
     def __init__(self, name):
 
@@ -14,10 +14,10 @@ class XsdType:
         return '{}{}'.format(syntax.XSD_TYPE_PREFIX, self.name)
 
 
-xsd_string = XsdType(syntax.STRING_TYPE_KEYWORD)
-xsd_bool = XsdType(syntax.BOOL_TYPE_KEYWORD)
-xsd_double = XsdType(syntax.DOUBLE_TYPE_KEYWORD)
-xsd_int = XsdType(syntax.INT_TYPE_KEYWORD)
+xsd_string = Type(syntax.STRING_TYPE_KEYWORD)
+xsd_bool = Type(syntax.BOOL_TYPE_KEYWORD)
+xsd_double = Type(syntax.DOUBLE_TYPE_KEYWORD)
+xsd_int = Type(syntax.INT_TYPE_KEYWORD)
 
 class JsonLdValue:
 
