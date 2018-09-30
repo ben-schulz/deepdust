@@ -11,10 +11,11 @@ def build():
 
     manifest_url_base = 'http://json-ld.org/test-suite/tests'
 
-    compaction_url = ('{}/compact-manifest.jsonld'
-                               .format(manifest_url_base))
+    manifest_file = 'compact-manifest.jsonld'
+    compaction_url = ('{}/{}'.format(manifest_url_base,
+                                     manifest_file))
 
-    compaction_rawtext_dest = './compaction.jsonld'
+    compaction_rawtext_dest = './{}'.format(manifest_file)
 
     remote.fetch(compaction_url, compaction_rawtext_dest)
 

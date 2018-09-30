@@ -3,6 +3,7 @@ import datetime
 
 import deepdust.io.files as files
 
+
 class TestSuite:
 
     def __init__(self, jsonld_text):
@@ -46,10 +47,17 @@ class TestSuite:
 
 
 
+
+
     def __str__(self):
 
         test_functions = str.join('\n\n',
             [str(c) for c in self.cases])
+
+        load_json_function = ("""
+
+
+        """)
 
         return (
         """#generated: {}
@@ -61,10 +69,25 @@ import deepdust.io.files
 
 import deepdust.test.claim as claim
 
+
+def load_json(filename):
+
+    f = open(deepdust.io.files.relative(__name__, "cases/" + filename))
+    obj = None
+    try:
+        obj = json.load(f)
+
+    finally:
+        f.close()
+
+    return obj
+
 class Test{}(unittest.TestCase):
 
 {}
-""").format(datetime.datetime.now(), self.name, test_functions)
+""").format(datetime.datetime.now(),
+            self.name,
+            test_functions)
 
 
     class TestCase:
@@ -72,20 +95,7 @@ class Test{}(unittest.TestCase):
         def __init__(self, cases_path, **kwargs):
 
             self.__dict__.update(kwargs)
-
-            def load_from(filename):
-
-                return (
-                    ('json.load('
-                     'open(deepdust.io.files.relative('
-                     '__name__,'
-                     '"./cases/{}")))').format(filename))
             
-
-            self.input_expression = load_from(self.input)
-            self.context_expression = load_from(self.context)
-            self.output_expression = load_from(self.expect)
-
             self.action = 'deepdust.jsonld.document.compact'
             self.assertion = 'claim.Json.equal'
 
@@ -112,9 +122,9 @@ class Test{}(unittest.TestCase):
                 """
         def test_{}(self):
 
-            case = {}
-            expect = {}
-            context = {}
+            case = load_json("{}")
+            context = load_json("{}")
+            expect = load_json("{}")
 
             result = {}(case, context)
 
@@ -123,9 +133,9 @@ class Test{}(unittest.TestCase):
 
             ).format(
                 self.testname,
-                self.input_expression,
-                self.output_expression,
-                self.context_expression,
+                self.input,
+                self.context,
+                self.expect,
 
                 self.action,
                 self.assertion)
