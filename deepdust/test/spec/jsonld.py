@@ -31,7 +31,7 @@ class TestSuite:
 
         except FileExistsError:
             clean()
-
+            os.mkdir(self.cases_path)
 
         def fetch_case_part(testfile):
 

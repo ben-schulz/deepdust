@@ -52,7 +52,7 @@ setuptools.setup(
     test_suite='deepdust.test.test_all',
 
     cmdclass={
-        'jsonld_spec': BuildSpecTestCommand
+        'spec': BuildSpecTestCommand
         },
     
     include_package_data=True,

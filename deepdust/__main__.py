@@ -9,5 +9,4 @@ def build_spectest():
 
 if __name__ == '__main__':
 
-    print('ok')
     build_spectest()
