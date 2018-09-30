@@ -15,8 +15,9 @@ def build():
     compaction_url = ('{}/{}'.format(manifest_url_base,
                                      manifest_file))
 
-    compaction_rawtext_dest = '{}/{}'.format(__file__,
-                                             manifest_file)
+    compaction_rawtext_dest = files.relative(__name__,
+                                        'cases/{}'
+                                        .format(manifest_file))
 
     remote.fetch(compaction_url, compaction_rawtext_dest)
 
@@ -30,7 +31,7 @@ def build():
 
     c.build_cases(remote.fetch)
 
-    outfile = files.relative(__name__, 'test_compaction.py')
+    outfile = files.relative(__name__, 'test_compaction__generated__.py')
 
     with open(outfile, mode='wt') as f:
         f.write(str(c))
