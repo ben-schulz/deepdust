@@ -1,3 +1,6 @@
+#ignore generated test code
+deepdust/test/spec/cases
+
 # ignore Emacs autosaves
 *~
 
