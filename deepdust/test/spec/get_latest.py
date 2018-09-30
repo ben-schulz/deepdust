@@ -15,7 +15,8 @@ def build():
     compaction_url = ('{}/{}'.format(manifest_url_base,
                                      manifest_file))
 
-    compaction_rawtext_dest = './{}'.format(manifest_file)
+    compaction_rawtext_dest = '{}/{}'.format(__file__,
+                                             manifest_file)
 
     remote.fetch(compaction_url, compaction_rawtext_dest)
 
