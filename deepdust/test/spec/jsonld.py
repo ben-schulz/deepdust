@@ -1,4 +1,5 @@
 import os
+import datetime
 
 import deepdust.io.files as files
 
@@ -37,7 +38,7 @@ class TestSuite:
             fetch('{}/{}'.format(self.baseIri, testfile),
                   '{}/{}'.format(self.cases_path, testfile))
 
-        for c in self.cases[0:5]:
+        for c in self.cases:
 
             fetch_case_part(c.input)
             fetch_case_part(c.context)
@@ -51,17 +52,19 @@ class TestSuite:
             [str(c) for c in self.cases])
 
         return (
-        """
+        """#generated: {}
 import unittest
 import json
 
 import deepdust.jsonld.document
+import deepdust.io.files
+
 import deepdust.test.claim as claim
 
 class Test{}(unittest.TestCase):
 
 {}
-""").format(self.name, test_functions)
+""").format(datetime.datetime.now(), self.name, test_functions)
 
 
     class TestCase:
@@ -69,31 +72,39 @@ class Test{}(unittest.TestCase):
         def __init__(self, cases_path, **kwargs):
 
             self.__dict__.update(kwargs)
-            self.cases_path = cases_path
 
-            def load_expression(filename):
-                
-                path = os.path.join(self.cases_path,
-                                             filename)
-                return ('json.load(open("{}"))'
-                        .format(path))
+            def load_from(filename):
 
-            self.input_expression = load_expression(
-                self.input)
+                return (
+                    ('json.load('
+                     'open(deepdust.io.files.relative('
+                     '__name__,'
+                     '"./cases/{}")))').format(filename))
+            
 
-            self.context_expression = load_expression(
-                self.context)
-
-            self.output_expression = load_expression(
-                self.expect)
+            self.input_expression = load_from(self.input)
+            self.context_expression = load_from(self.context)
+            self.output_expression = load_from(self.expect)
 
             self.action = 'deepdust.jsonld.document.compact'
             self.assertion = 'claim.Json.equal'
 
             self.testname = (self.name
                              .replace(' ', '_')
-                             .replace('-', '_'))
-
+                             .replace('-', '_')
+                             .replace(',', '')
+                             .replace('.', '')
+                             .replace("'", '')
+                             .replace('"', '')
+                             .replace('#', '__token_hash__')
+                             .replace('@', '__token_at__')
+                             .replace(':', '__token__colon_')
+                             .replace('/', '__token__fslash_')
+                             .replace('\\', '__token__bslash_')
+                             .replace('[', '__token__lbracket_')
+                             .replace(']', '__token__rbracket_')
+                             .replace('(', '__token__lparen_')
+                             .replace(')', '__token__rparen_'))
 
         def __str__(self):
 

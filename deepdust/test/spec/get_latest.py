@@ -28,7 +28,7 @@ def build():
 
     c.build_cases(remote.fetch)
 
-    outfile = files.relative(__name__, 'test_foo.py')
+    outfile = files.relative(__name__, 'test_compaction.py')
 
     with open(outfile, mode='wt') as f:
         f.write(str(c))
