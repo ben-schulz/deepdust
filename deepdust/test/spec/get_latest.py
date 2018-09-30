@@ -1,33 +1,36 @@
 import json
 import os
+import sys
 
-import jsonld
-import remote
+import deepdust.test.spec.jsonld as jsonld
+import deepdust.test.spec.remote as remote
 
+import deepdust.io.files as files
 
-manifest_url_base = 'http://json-ld.org/test-suite/tests'
+def build():
 
-compaction_url = ('{}/compact-manifest.jsonld'
-                           .format(manifest_url_base))
+    manifest_url_base = 'http://json-ld.org/test-suite/tests'
 
-compaction_rawtext_dest = './compaction.jsonld'
+    compaction_url = ('{}/compact-manifest.jsonld'
+                               .format(manifest_url_base))
 
-remote.fetch(compaction_url, compaction_rawtext_dest)
+    compaction_rawtext_dest = './compaction.jsonld'
 
-cases = {}
-with open(compaction_rawtext_dest, mode='rt') as f:
+    remote.fetch(compaction_url, compaction_rawtext_dest)
 
-    rawtext = str.join('\n', f.readlines())
-    cases = json.loads(rawtext)
+    cases = {}
+    with open(compaction_rawtext_dest, mode='rt') as f:
 
-c = jsonld.TestSuite(cases)
+        rawtext = str.join('\n', f.readlines())
+        cases = json.loads(rawtext)
 
-c.build_cases(remote.fetch)
+    c = jsonld.TestSuite(cases)
 
+    c.build_cases(remote.fetch)
 
-this_module_path = os.path.abspath(__file__)
-this_module_dir = os.path.dirname(this_module_path)
-outfile = os.path.join(this_module_dir, 'test_foo.py')
+    outfile = files.relative(__name__, 'test_foo.py')
 
-with open(outfile, mode='wt') as f:
-    f.write(str(c))
+    with open(outfile, mode='wt') as f:
+        f.write(str(c))
+
+        

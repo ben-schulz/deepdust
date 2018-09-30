@@ -18,7 +18,7 @@ class BuildSpecTestCommand(distutils.cmd.Command):
         pass
 
     def run(self):
-        cmd = ['python3', 'deepdust/test/spec/get_latest.py']
+        cmd = ['python3', '-m', 'deepdust']
         subprocess.check_call(cmd)
 
 

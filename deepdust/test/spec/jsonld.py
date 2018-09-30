@@ -1,17 +1,17 @@
 import os
 
+import deepdust.io.files as files
+
 class TestSuite:
 
     def __init__(self, jsonld_text):
 
         self.__dict__.update(**jsonld_text)
 
-        this_module_path = os.path.abspath(__file__)
-        this_module_dir = os.path.dirname(this_module_path)
-        self.cases_path = os.path.join(this_module_dir,
-                                       'cases')
+        self.cases_path = files.relative(__name__, 'cases')
 
-        self.cases = [TestSuite.TestCase(self.cases_path, **(jsonld_text['sequence'][0]))]
+        self.cases = [TestSuite.TestCase(self.cases_path, **(c))
+                      for c in jsonld_text['sequence']]
 
 
     def build_cases(self, fetch):
@@ -37,7 +37,7 @@ class TestSuite:
             fetch('{}/{}'.format(self.baseIri, testfile),
                   '{}/{}'.format(self.cases_path, testfile))
 
-        for c in self.cases:
+        for c in self.cases[0:5]:
 
             fetch_case_part(c.input)
             fetch_case_part(c.context)
