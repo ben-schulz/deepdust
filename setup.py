@@ -49,7 +49,7 @@ setuptools.setup(
     entry_points={
     },
 
-    test_suite='deepdust.test.test_all',
+    test_suite='deepdust.test.test_spec',
 
     cmdclass={
         'spec': BuildSpecTestCommand

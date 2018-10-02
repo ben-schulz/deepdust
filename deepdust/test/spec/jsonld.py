@@ -54,11 +54,6 @@ class TestSuite:
         test_functions = str.join('\n\n',
             [str(c) for c in self.cases])
 
-        load_json_function = ("""
-
-
-        """)
-
         return (
         """#generated: {}
 import unittest
@@ -99,28 +94,16 @@ class Test{}(unittest.TestCase):
             self.action = 'deepdust.jsonld.document.compact'
             self.assertion = 'claim.Json.equal'
 
-            self.testname = (self.name
-                             .replace(' ', '_')
-                             .replace('-', '_')
-                             .replace(',', '')
-                             .replace('.', '')
-                             .replace("'", '')
-                             .replace('"', '')
-                             .replace('#', '__token_hash__')
-                             .replace('@', '__token_at__')
-                             .replace(':', '__token__colon_')
-                             .replace('/', '__token__fslash_')
-                             .replace('\\', '__token__bslash_')
-                             .replace('[', '__token__lbracket_')
-                             .replace(']', '__token__rbracket_')
-                             .replace('(', '__token__lparen_')
-                             .replace(')', '__token__rparen_'))
+            self.testid = kwargs['@id'].replace('#', '')
 
         def __str__(self):
 
             return (
                 """
         def test_{}(self):
+            \"\"\"
+            {}
+            \"\"\"
 
             case = load_json("{}")
             context = load_json("{}")
@@ -129,10 +112,12 @@ class Test{}(unittest.TestCase):
             result = {}(case, context)
 
             {}(expect, result)
-            """
+
+                """
 
             ).format(
-                self.testname,
+                self.testid,
+                self.purpose,
                 self.input,
                 self.context,
                 self.expect,

@@ -1,5 +1,5 @@
 #ignore generated test code
-deepdust/test/spec/*__generated__.py
+deepdust/test/spec/test_*.py
 deepdust/test/spec/cases
 
 # ignore Emacs autosaves
