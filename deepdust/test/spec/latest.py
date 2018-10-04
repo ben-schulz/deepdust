@@ -3,8 +3,8 @@ import os
 import sys
 
 import deepdust.test.spec.jsonld as jsonld
-import deepdust.test.spec.remote as remote
 
+import deepdust.io.remote as remote
 import deepdust.io.files as files
 
 def build():
