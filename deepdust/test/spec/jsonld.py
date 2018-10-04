@@ -18,21 +18,7 @@ class TestSuite:
 
     def build_cases(self, fetch):
 
-        def clean():
-
-            files = os.listdir(self.cases_path)
-            for f in files:
-                filepath = os.path.join(self.cases_path, f)
-                os.remove(filepath)
-
-            os.rmdir(self.cases_path)
-
-        try:
-            os.mkdir(self.cases_path)
-
-        except FileExistsError:
-            clean()
-            os.mkdir(self.cases_path)
+        files.clean_directory(self.cases_path)
 
         def fetch_case_part(testfile):
 
