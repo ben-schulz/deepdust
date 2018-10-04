@@ -18,8 +18,6 @@ class TestSuite:
 
     def build_cases(self, fetch):
 
-        files.clean_directory(self.cases_path)
-
         def fetch_case_part(testfile):
 
             fetch('{}/{}'.format(self.baseIri, testfile),
@@ -30,9 +28,6 @@ class TestSuite:
             fetch_case_part(c.input)
             fetch_case_part(c.context)
             fetch_case_part(c.expect)
-
-
-
 
 
     def __str__(self):

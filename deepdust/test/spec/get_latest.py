@@ -15,10 +15,12 @@ def build():
     compaction_url = ('{}/{}'.format(manifest_url_base,
                                      manifest_file))
 
-    compaction_rawtext_dest = files.relative(__name__,
-                                        'cases/{}'
-                                        .format(manifest_file))
+    artifact_dir = files.relative(__name__, 'cases')
+    
+    compaction_rawtext_dest = os.path.join(
+        artifact_dir, manifest_file)
 
+    files.clean_directory(artifact_dir)
     remote.fetch(compaction_url, compaction_rawtext_dest)
 
     cases = {}
