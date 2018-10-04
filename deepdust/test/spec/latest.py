@@ -20,7 +20,7 @@ def build():
     compaction_rawtext_dest = os.path.join(
         artifact_dir, manifest_file)
 
-    files.clean_directory(artifact_dir)
+    files.clean_directory('test/spec/cases')
     remote.fetch(compaction_url, compaction_rawtext_dest)
 
     cases = {}
