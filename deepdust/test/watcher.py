@@ -38,8 +38,7 @@ def get_matching_files(project_path, pattern=None):
 
 def run_tests(test_path, test_pattern='Test_*.py'):
 
-    cmd = [ 'python3', '-m', 'unittest', 'discover',
-            '-s', test_path, '-p', test_pattern]
+    cmd = [ 'python3', 'setup.py', 'test']
 
     subprocess.call(cmd)
 
