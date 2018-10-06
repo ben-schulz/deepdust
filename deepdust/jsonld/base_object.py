@@ -1,10 +1,13 @@
 import json
 
-class JSON:
+class Json:
 
     def __init__(self, obj):
 
-        self.obj = obj
+        if isinstance(obj, str):
+            self.obj = json.loads(obj)
+        else:
+            self.obj = obj
 
 
     def __eq__(self, other):

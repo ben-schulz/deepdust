@@ -45,18 +45,18 @@ import deepdust.io.files
 
 import deepdust.test.claim as claim
 
+def load_text(filename):
 
-def load_json(filename):
+        f = open(deepdust.io.files.relative(__name__, "cases/" + filename))
+        txt = ''
+        try:
+            txt = f.read()
 
-    f = open(deepdust.io.files.relative(__name__, "cases/" + filename))
-    obj = None
-    try:
-        obj = json.load(f)
+        finally:
+            f.close()
 
-    finally:
-        f.close()
+        return txt
 
-    return obj
 
 class Test{}(unittest.TestCase):
 
@@ -86,9 +86,9 @@ class Test{}(unittest.TestCase):
             {}
             \"\"\"
 
-            case = load_json("{}")
-            context = load_json("{}")
-            expect = load_json("{}")
+            case = load_text("{}")
+            context = load_text("{}")
+            expect = load_text("{}")
 
             result = {}(case, context)
 

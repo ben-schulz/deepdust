@@ -23,8 +23,8 @@ class Json:
 
     def equal(expect, actual):
 
-        _expect = base_object.JSON(expect)
-        _actual = base_object.JSON(actual)
+        _expect = base_object.Json(expect)
+        _actual = base_object.Json(actual)
 
         if _expect != _actual:
             raise Json.NotExpectedError(_expect, _actual)
