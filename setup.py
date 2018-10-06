@@ -35,7 +35,7 @@ setuptools.setup(
     url='https://github.com/ben-schulz/deepdust',
     author='Benjamin Schulz',
     author_email='benjamin.john.schulz@gmail.com',
-    license='MIT',
+    license='GPL-3.0',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         ],
