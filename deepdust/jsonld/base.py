@@ -26,7 +26,7 @@ def objectify(obj):
 
         return LdDict(items)
 
-    return obj
+    return LdValue(obj)
 
 
 class JObject:
@@ -125,6 +125,13 @@ class LdDict(JObject):
     def __init__(self, obj):
 
         super(LdDict, self).__init__(obj)
+
+
+class LdValue(JObject):
+
+    def __init__(self, obj):
+
+        super(LdValue, self).__init__(obj)
 
 
 class FormatError(Exception):
