@@ -3,7 +3,6 @@ import copy
 import deepdust.jsonld.base as base
 import deepdust.jsonld.model as model
 
-
 def compact(jsonld, context=None):
 
     obj = base.deserialize(jsonld)
@@ -16,16 +15,9 @@ def compact(jsonld, context=None):
         return str(obj)
 
     if isinstance(obj, base.LdArray):
+        obj = obj.unify()
 
-        obj[0]['@context'] = _context.tojson()
-
-        if 1 == len(obj):
-            obj = base.JObject(obj[0])
-
-    elif isinstance(obj, base.LdDict):
-
-        obj['@context'] = _context.tojson()
-
+    obj['@context'] = _context.tojson()
 
     for k in obj.keys():
 
@@ -35,14 +27,7 @@ def compact(jsonld, context=None):
         value = copy.deepcopy(obj[k])
 
         if k not in _context.terms:
-
-            if (isinstance(value, list)
-                and 1 == len(value)):
-
-                obj[k] = value[0]
-
             continue
-
 
         del(obj[k])
 

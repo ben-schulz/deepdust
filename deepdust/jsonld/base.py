@@ -11,18 +11,29 @@ def deserialize(text):
     
     if isinstance(obj, list):
 
-        items = [ JObject(j) for j in obj ]
+        items = [ JObject.choose(j) for j in obj ]
         return LdArray(items)
 
     elif isinstance(obj, dict):
 
-        items = { k : JObject(v) for (k, v) in obj.items() }
+        items = { k : JObject.choose(v)
+                  for (k, v) in obj.items() }
+
         return LdDict(items)
 
     return obj
 
 
 class JObject:
+
+    def choose(obj):
+
+        if isinstance(obj, list):
+            return LdArray(obj)
+
+        elif isinstance(obj, dict):
+            return LdDict(obj)
+
 
     def __init__(self, obj):
 
@@ -92,7 +103,16 @@ class LdArray(JObject):
 
     def __init__(self, obj):
 
+        self.items = obj
         super(LdArray, self).__init__(obj)
+
+
+    def unify(self):
+
+        if 1 != len(self.items):
+            return self
+
+        return self.items[0]
 
 
 class LdDict(JObject):
