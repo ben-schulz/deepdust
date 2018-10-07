@@ -16,6 +16,16 @@ class Json:
         else:
             self.obj = obj
 
+        if isinstance(self.obj, list):
+            self.jsontype = 'list'
+
+        elif isinstance(self.obj, dict):
+            self.jsontype = 'dict'
+
+        else:
+            self.jsontype = 'undefined'
+
+
 
     def __eq__(self, other):
 
@@ -38,6 +48,11 @@ class Json:
         return self.obj[key]
 
 
+    def __setitem__(self, key, value):
+
+        self.obj[key] = value
+
+
     def __delitem__(self, key):
 
         del(self.obj[key])
@@ -45,12 +60,17 @@ class Json:
 
     def __len__(self):
 
-        return len(self.obj.keys())
+        return len(self.obj)
 
 
     def __str__(self):
 
         return str(self.obj).replace("'", '"')
+
+
+    def keys(self):
+
+        return self.obj.keys()
 
 
     def format(self):
