@@ -1,4 +1,4 @@
-import deepdust.jsonld.base_object as base_object
+import deepdust.jsonld.base as base
 
 class Json:
 
@@ -23,8 +23,8 @@ class Json:
 
     def equal(expect, actual):
 
-        _expect = base_object.Json(expect)
-        _actual = base_object.Json(actual)
+        _expect = base.Json(expect)
+        _actual = base.Json(actual)
 
         if _expect != _actual:
             raise Json.NotExpectedError(_expect, _actual)
