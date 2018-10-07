@@ -6,7 +6,7 @@ import deepdust.jsonld.model as model
 
 def compact(jsonld, context=None):
 
-    obj = base.JObject(base.deserialize(jsonld))
+    obj = base.deserialize(jsonld)
     _context = model.Context(context or obj.get('@context'))
 
     if '@id' in obj and 2 > len(obj):
@@ -15,15 +15,15 @@ def compact(jsonld, context=None):
     if not _context:
         return str(obj)
 
-
-    if 'list' == obj.jsontype:
+    if isinstance(obj, base.LdArray):
 
         obj[0]['@context'] = _context.tojson()
 
         if 1 == len(obj):
             obj = base.JObject(obj[0])
 
-    elif 'dict' == obj.jsontype:
+    elif isinstance(obj, base.LdDict):
+
         obj['@context'] = _context.tojson()
 
 

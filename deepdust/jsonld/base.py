@@ -9,6 +9,12 @@ def deserialize(text):
     except json.decoder.JSONDecodeError:
         raise FormatError(text)
     
+    if isinstance(obj, list):
+        return LdArray(obj)
+
+    elif isinstance(obj, dict):
+        return LdDict(obj)
+
     return obj
 
 
@@ -17,16 +23,6 @@ class JObject:
     def __init__(self, obj):
 
         self.obj = obj
-
-        if isinstance(self.obj, list):
-            self.jsontype = 'list'
-
-        elif isinstance(self.obj, dict):
-            self.jsontype = 'dict'
-
-        else:
-            self.jsontype = 'undefined'
-
 
 
     def __eq__(self, other):
@@ -86,6 +82,24 @@ class JObject:
     def format(self):
 
         return json.dumps(self.obj, sort_keys=True, indent=4)
+
+
+class LdArray(JObject):
+
+    def __init__(self, obj):
+
+        self.jsontype = 'list'
+
+        super(LdArray, self).__init__(obj)
+
+
+class LdDict(JObject):
+
+    def __init__(self, obj):
+
+        self.jsontype = 'dict'
+
+        super(LdDict, self).__init__(obj)
 
 
 class FormatError(Exception):
