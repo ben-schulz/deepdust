@@ -8,7 +8,12 @@ def deserialize(text):
 
     except json.decoder.JSONDecodeError:
         raise FormatError(text)
+
+    return objectify(obj)
     
+
+def objectify(obj):
+
     if isinstance(obj, list):
 
         items = [ JObject.choose(j) for j in obj ]
