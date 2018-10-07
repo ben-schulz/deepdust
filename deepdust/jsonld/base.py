@@ -88,16 +88,12 @@ class LdArray(JObject):
 
     def __init__(self, obj):
 
-        self.jsontype = 'list'
-
         super(LdArray, self).__init__(obj)
 
 
 class LdDict(JObject):
 
     def __init__(self, obj):
-
-        self.jsontype = 'dict'
 
         super(LdDict, self).__init__(obj)
 
