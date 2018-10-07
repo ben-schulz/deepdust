@@ -10,10 +10,14 @@ def deserialize(text):
         raise FormatError(text)
     
     if isinstance(obj, list):
-        return LdArray(obj)
+
+        items = [ JObject(j) for j in obj ]
+        return LdArray(items)
 
     elif isinstance(obj, dict):
-        return LdDict(obj)
+
+        items = { k : JObject(v) for (k, v) in obj.items() }
+        return LdDict(items)
 
     return obj
 
