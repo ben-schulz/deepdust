@@ -73,6 +73,14 @@ class Json:
         return self.obj.keys()
 
 
+    def get(self, key):
+
+        if key in self.obj:
+            return self.obj[keys]
+
+        return None
+
+
     def format(self):
 
         return json.dumps(self.obj, sort_keys=True, indent=4)
