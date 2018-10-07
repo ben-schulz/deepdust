@@ -7,7 +7,7 @@ import deepdust.jsonld.model as model
 
 def compact(jsonld, context=None):
 
-    obj = base.Json(jsonld)
+    obj = base.JObject(jsonld)
     _context = model.Context(context or obj.get('@context'))
 
     if '@id' in obj and 2 > len(obj):
@@ -22,7 +22,7 @@ def compact(jsonld, context=None):
         obj[0]['@context'] = _context.tojson()
 
         if 1 == len(obj):
-            obj = base.Json(obj[0])
+            obj = base.JObject(obj[0])
 
     elif 'dict' == obj.jsontype:
         obj['@context'] = _context.tojson()

@@ -1,7 +1,7 @@
 import json
 
 
-class Json:
+class JObject:
 
     def __init__(self, obj):
 
