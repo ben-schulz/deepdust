@@ -16,12 +16,7 @@ class JObject:
 
     def __init__(self, obj):
 
-        if isinstance(obj, str):
-
-            self.obj = deserialize(obj)
-
-        else:
-            self.obj = obj
+        self.obj = obj
 
         if isinstance(self.obj, list):
             self.jsontype = 'list'

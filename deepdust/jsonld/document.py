@@ -7,7 +7,7 @@ import deepdust.jsonld.model as model
 
 def compact(jsonld, context=None):
 
-    obj = base.JObject(jsonld)
+    obj = base.JObject(base.deserialize(jsonld))
     _context = model.Context(context or obj.get('@context'))
 
     if '@id' in obj and 2 > len(obj):
