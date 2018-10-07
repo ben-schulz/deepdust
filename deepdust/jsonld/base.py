@@ -1,17 +1,24 @@
 import json
 
 
+def deserialize(text):
+
+    try:
+        obj = json.loads(text)
+
+    except json.decoder.JSONDecodeError:
+        raise FormatError(text)
+    
+    return obj
+
+
 class JObject:
 
     def __init__(self, obj):
 
         if isinstance(obj, str):
 
-            try:
-                self.obj = json.loads(obj)
-
-            except json.decoder.JSONDecodeError:
-                raise FormatError(obj)
+            self.obj = deserialize(obj)
 
         else:
             self.obj = obj
