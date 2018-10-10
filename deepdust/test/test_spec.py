@@ -1,7 +1,6 @@
 import unittest
 import os
 
-import deepdust.test
 import deepdust.test.spec.implemented as implemented
 
 try:
