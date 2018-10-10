@@ -1,5 +1,59 @@
 import json
 
+class JsonTypeError(TypeError):
+    pass
+
+class JsonFunctor:
+
+    def __init__(self, **kwargs):
+
+        def get_function(keyword):
+
+            def _id(x):
+                return x
+
+            return kwargs.get(keyword, _id)
+
+
+        self.array_f = get_function('array_f')
+        self.obj_f = get_function('obj_f')
+        self.string_f = get_function('string_f')
+        self.int_f = get_function('int_f')
+        self.real_f = get_function('real_f')
+        self.bool_f = get_function('bool_f')
+        self.null_f = get_function('null_f')
+
+        self.functions = {
+
+            type(list()) : (lambda x:
+                            self.array_f(self.apply)(x)),
+
+            type(dict()) : (lambda x:
+                            self.obj_f(self.apply)(x)),
+
+            type('') : self.string_f,
+            type(0) : self.int_f,
+            type(0.0) : self.real_f,
+            type(False) : self.bool_f,
+            type(None) : self.null_f
+        }
+
+
+    def apply(self, jelement):
+
+        ptype = type(jelement)
+        try:
+            f = self.functions[ptype]
+
+        except KeyError:
+            msg = ("No operation defined for type "
+                   "'{}'.".format(ptype))
+
+            raise JsonTypeError(msg)
+        
+        
+        return f(jelement)
+
 
 def deserialize(text):
 
