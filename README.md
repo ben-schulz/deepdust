@@ -12,7 +12,7 @@ python setup.py spec
 
 to build python-executable source from the current [JSON-LD Test Suite](https://json-ld.org/test-suite/).
 
-to run all currently implemented test cases, run:
+to run all currently implemented test cases:
 
 ```
 python setup.py test
