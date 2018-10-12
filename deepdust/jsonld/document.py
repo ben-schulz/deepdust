@@ -14,16 +14,12 @@ def compact(jsonld, context=None):
     compact_props = functor.trans_props(
         lambda x: _context.terms.get(x, x))
 
-    collapse_singleton_arrays = functor.squeeze
-
     compact_types = functor.trans_values(
         lambda x: _context.terms.get(x, x), keys={'@type'})
 
-    _compact = (compact_props
-                .then(collapse_singleton_arrays
-                      .then(compact_types)))
-
-    result = _compact.apply(ldobj)
+    result = (compact_props
+                .then(functor.squeeze
+                      .then(compact_types))).apply(ldobj)
 
     if _context:
         result['@context'] = (
