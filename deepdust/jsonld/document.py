@@ -3,50 +3,61 @@ import copy
 import deepdust.jsonld.base as base
 import deepdust.jsonld.model as model
 
+
 def compact(jsonld, context=None):
 
-    obj = base.deserialize(jsonld)
-    _context = model.Context(context or obj.get('@context'))
+    ldobj = base.deserialize(jsonld)
 
-    if '@id' in obj and 2 > len(obj):
-        del(obj['@id'])
+    _context = model.Context(context or ldobj.get('@context'))
+
+    if '@id' in ldobj and 2 > len(ldobj):
+        del(ldobj['@id'])
 
     if not _context:
-        return str(obj)
+        return str(ldobj)
 
-    if isinstance(obj, base.LdArray):
-        obj = obj.unify()
+    compact_props = base.JsonFunctor(
+        obj_f = (lambda a:
+                 (lambda x: { _context.terms.get(k, k) : a(v)
+                              for (k,v) in x.items()}
+                 ))
+        )
 
-    obj['@context'] = _context.tojson()
+    def unify(a):
 
-    for k in obj.keys():
+        def _unify(x):
 
-        if '@type' == k and obj[k][0] in _context.terms:
-            obj[k] = _context.terms[obj[k][0]]
+            if len(x) == 1:
+                return a(x[0])
+            return [ a(i) for i in x ]
 
-        value = copy.deepcopy(obj[k])
+        return _unify
 
-        if k not in _context.terms:
-            continue
+    collapse_singleton_arrays = (
+        base.JsonFunctor(array_f = unify))
 
-        del(obj[k])
+    def ctx_types(a):
 
-        if (isinstance(value, list) and 1 == len(value)):
-            obj[_context.terms[k]] = value[0]
+        def _ctx_types(x):
 
-        else:
-            obj[_context.terms[k]] = value
+            _x = {}
+            for k in x.keys():
+                if '@type' == k:
+                    _x[k] = _context.terms.get(x[k], x[k])
+                else:
+                    _x[k] = x[k]
 
+            return { k : a(v) for (k, v) in _x.items() }
 
-        if (isinstance(obj[_context.terms[k]], dict)):
+        return _ctx_types
 
-            _vals = obj[_context.terms[k]]
-            if '@type' in _vals:
-                typ = _vals['@type']
-                if typ in _context.terms:
-                    newtyp = _context.terms[typ]
+    compact_types = (
+        base.JsonFunctor(obj_f = ctx_types))
 
-                    obj[_context.terms[k]]['@type'] = newtyp
+    result = compact_props.apply(ldobj)
+    result = collapse_singleton_arrays.apply(result)
+    result = compact_types.apply(result)
 
+    result['@context'] = base.deserialize(context)['@context']
 
-    return str(obj)
+    return str(result).replace("'", '"')

@@ -131,3 +131,24 @@ class TestBase(unittest.TestCase):
         self.assertEqual('g', result[3])
         self.assertEqual(['h', 'i'], result[4])
         self.assertEqual('j', result[5])
+
+
+    def test_heterogenous_types_recurse(self):
+
+        renames = {
+            'x': 'xx',
+            'y': 'yy',
+            'z': 'nothing'
+        }
+
+        f = base.JsonFunctor(
+            obj_f=(lambda a:
+                   (lambda x:
+                    {renames[k] : a(v)
+                     for (k, v) in x.items()})),
+        )
+
+        result = f.apply({
+            'x' : [1, 2, 3],
+            'y' : [4, 5, 6]
+        })

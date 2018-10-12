@@ -1,7 +1,13 @@
 import json
 
 class JsonTypeError(TypeError):
-    pass
+
+    def __init__(self, msg):
+
+        self.msg = msg
+
+        super(JsonTypeError, self).__init__(msg)
+
 
 class JsonFunctor:
 
@@ -14,9 +20,20 @@ class JsonFunctor:
 
             return kwargs.get(keyword, _id)
 
+        def _default_array_f(app):
 
-        self.array_f = get_function('array_f')
-        self.obj_f = get_function('obj_f')
+            return lambda array: [ app(x) for x in array ]
+
+
+        def _default_obj_f(app):
+
+            return (lambda obj:
+                    { k : app(v) for (k, v) in obj.items() })
+
+
+        self.array_f = kwargs.get('array_f', _default_array_f)
+        self.obj_f = kwargs.get('obj_f', _default_obj_f)
+
         self.string_f = get_function('string_f')
         self.int_f = get_function('int_f')
         self.real_f = get_function('real_f')
@@ -25,11 +42,8 @@ class JsonFunctor:
 
         self.functions = {
 
-            type(list()) : (lambda x:
-                            self.array_f(self.apply)(x)),
-
-            type(dict()) : (lambda x:
-                            self.obj_f(self.apply)(x)),
+            type(list()) : self.array_f(self.apply),
+            type(dict()) : self.obj_f(self.apply),
 
             type('') : self.string_f,
             type(0) : self.int_f,
@@ -63,24 +77,18 @@ def deserialize(text):
     except json.decoder.JSONDecodeError:
         raise FormatError(text)
 
-    return objectify(obj)
+    return obj
     
 
-def objectify(obj):
+def serialize(ldobj):
 
-    if isinstance(obj, list):
+    return json.dumps(ldobj)
 
-        items = [ JObject.choose(j) for j in obj ]
-        return LdArray(items)
 
-    elif isinstance(obj, dict):
+def show(ldobj):
 
-        items = { k : JObject.choose(v)
-                  for (k, v) in obj.items() }
+    return json.dumps(ldobj, sort_keys=True, indent=4)
 
-        return LdDict(items)
-
-    return LdValue(obj)
 
 
 class JObject:

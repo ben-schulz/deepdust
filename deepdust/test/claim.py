@@ -17,8 +17,8 @@ class Json:
             
             return ('\nExpected:\n{}\n\nActual:\n{}\n'
                  .format(
-                     self.expect.format(),
-                     self.actual.format()))
+                     base.show(self.expect),
+                     base.show(self.actual)))
 
 
     def equal(expect, actual):
