@@ -1,8 +1,8 @@
 import copy
 
 import deepdust.jsonld.base as base
+import deepdust.jsonld.functor as functor
 import deepdust.jsonld.model as model
-
 
 def compact(jsonld, context=None):
 
@@ -16,7 +16,7 @@ def compact(jsonld, context=None):
     if not _context:
         return str(ldobj)
 
-    compact_props = base.JsonFunctor(
+    compact_props = functor.Json(
         obj_f = (lambda a:
                  (lambda x: { _context.terms.get(k, k) : a(v)
                               for (k,v) in x.items()}
@@ -34,7 +34,7 @@ def compact(jsonld, context=None):
         return _unify
 
     collapse_singleton_arrays = (
-        base.JsonFunctor(array_f = unify))
+        functor.Json(array_f = unify))
 
     def ctx_types(a):
 
@@ -52,7 +52,7 @@ def compact(jsonld, context=None):
         return _ctx_types
 
     compact_types = (
-        base.JsonFunctor(obj_f = ctx_types))
+        functor.Json(obj_f = ctx_types))
 
     _compact = (compact_props
                 .then(collapse_singleton_arrays

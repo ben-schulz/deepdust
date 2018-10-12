@@ -1,12 +1,12 @@
 import unittest
 
-import deepdust.jsonld.base as base
+import deepdust.jsonld.functor as functor
 
-class TestBase(unittest.TestCase):
+class TestFunctor(unittest.TestCase):
 
     def test_apply_primitive_int(self):
 
-        f = base.JsonFunctor(
+        f = functor.Json(
             int_f=lambda x: x + 1
         )
 
@@ -17,7 +17,7 @@ class TestBase(unittest.TestCase):
 
     def test_apply_primitive_float(self):
 
-        f = base.JsonFunctor(
+        f = functor.Json(
             real_f=lambda x: x + 1
         )
 
@@ -28,7 +28,7 @@ class TestBase(unittest.TestCase):
 
     def test_apply_primitive_bool(self):
 
-        f = base.JsonFunctor(
+        f = functor.Json(
             bool_f=lambda x: not x
         )
 
@@ -38,7 +38,7 @@ class TestBase(unittest.TestCase):
 
     def test_apply_primitive_null(self):
 
-        f = base.JsonFunctor(
+        f = functor.Json(
             null_f=lambda x: 'null value'
         )
 
@@ -47,7 +47,7 @@ class TestBase(unittest.TestCase):
 
     def test_apply_primitive_string(self):
 
-        f = base.JsonFunctor(
+        f = functor.Json(
             string_f=lambda x: '"{}"'.format(x)
         )
 
@@ -58,7 +58,7 @@ class TestBase(unittest.TestCase):
 
     def test_apply_dictionary_flat(self):
 
-        f = base.JsonFunctor(
+        f = functor.Json(
             obj_f=(lambda a:
                    (lambda x: { k : (v*2)
                               for (k, v) in x.items()  }))
@@ -73,7 +73,7 @@ class TestBase(unittest.TestCase):
 
     def test_apply_array_flat(self):
 
-        f = base.JsonFunctor(
+        f = functor.Json(
             array_f=lambda a: (lambda x: [ y*3 for y in x ])
         )
 
@@ -87,7 +87,7 @@ class TestBase(unittest.TestCase):
 
     def test_apply_dictionary_recursive_simple(self):
 
-        f = base.JsonFunctor(
+        f = functor.Json(
             obj_f=(lambda a:
                    (lambda x: { ('_' + k) : a(v)
                                 for (k, v) in x.items() }))
@@ -111,7 +111,7 @@ class TestBase(unittest.TestCase):
                 return x[0]
             return x
 
-        f = base.JsonFunctor(
+        f = functor.Json(
             array_f=lambda a: (lambda x: [ a(unify(y))
                                            for y in x ])
         )
@@ -141,7 +141,7 @@ class TestBase(unittest.TestCase):
             'z': 'nothing'
         }
 
-        f = base.JsonFunctor(
+        f = functor.Json(
             obj_f=(lambda a:
                    (lambda x:
                     {renames[k] : a(v)

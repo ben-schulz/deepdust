@@ -25,7 +25,7 @@ def additional_tests():
     loader = unittest.TestLoader()
 
     test_suite.addTest(loader.loadTestsFromTestCase(
-        deepdust.test.test_base.TestBase))
+        deepdust.test.test_base.TestFunctor))
 
     return test_suite
 
