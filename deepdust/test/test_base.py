@@ -131,19 +131,3 @@ class TestBase(unittest.TestCase):
         self.assertEqual('g', result[3])
         self.assertEqual(['h', 'i'], result[4])
         self.assertEqual('j', result[5])
-
-
-    @unittest.skip('under development')
-    def test_apply_replace_values_at_depth(self):
-
-        f = base.JsonFunctor(
-            null_f = lambda _: "null",
-
-            )
-
-        result = f.apply({
-            'a': {'x': [], 'y': None},
-            'b': [{'1':1, '2':2}, {'3':3, '4':4}]
-        })
-
-
