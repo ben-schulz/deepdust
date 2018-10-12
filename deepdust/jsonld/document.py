@@ -17,9 +17,14 @@ def compact(jsonld, context=None):
     compact_types = functor.trans_values(
         lambda x: _context.terms.get(x, x), keys={'@type'})
 
+    nullify_nonetype = functor.Json(
+        null_f = lambda _: "null"
+        )
+
     result = (compact_props
-                .then(functor.squeeze
-                      .then(compact_types))).apply(ldobj)
+            .then(functor.squeeze
+                  .then(compact_types
+                        .then(nullify_nonetype)))).apply(ldobj)
 
     if _context:
         result['@context'] = (
