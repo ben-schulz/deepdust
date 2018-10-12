@@ -3,7 +3,7 @@ import os
 
 import deepdust.test.spec.implemented as implemented
 
-import deepdust.test.test_base
+import deepdust.test.test_functor
 
 try:
     import deepdust.test.spec.test_compaction as compaction
@@ -25,7 +25,7 @@ def additional_tests():
     loader = unittest.TestLoader()
 
     test_suite.addTest(loader.loadTestsFromTestCase(
-        deepdust.test.test_base.TestFunctor))
+        deepdust.test.test_functor.TestFunctor))
 
     return test_suite
 
