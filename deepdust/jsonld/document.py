@@ -54,9 +54,11 @@ def compact(jsonld, context=None):
     compact_types = (
         base.JsonFunctor(obj_f = ctx_types))
 
-    result = compact_props.apply(ldobj)
-    result = collapse_singleton_arrays.apply(result)
-    result = compact_types.apply(result)
+    _compact = (compact_props
+                .then(collapse_singleton_arrays
+                      .then(compact_types)))
+
+    result = _compact.apply(ldobj)
 
     result['@context'] = base.deserialize(context)['@context']
 
