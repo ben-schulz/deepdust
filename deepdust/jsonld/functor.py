@@ -76,3 +76,50 @@ class Json:
 
         return (Json.Apply(
             lambda x: other.apply(self.apply(x))))
+
+
+def _squeeze(a):
+
+    def __squeeze(x):
+
+        if len(x) == 1:
+            return a(x[0])
+        return [ a(i) for i in x ]
+
+    return __squeeze
+
+
+squeeze = Json(
+    array_f = _squeeze
+)
+
+def trans_props(f):
+
+    return Json(
+        obj_f = (lambda a:
+                 (lambda x: { f(k) : a(v)
+                              for (k,v) in x.items()}
+                 ))
+        )
+
+def trans_values(f, keys=None):
+
+    if not keys:
+
+        return Json(
+            obj_f = (lambda a:
+                     lambda x: { k : a(f(v))
+                                 for (k, v) in x.items} )
+        )
+
+    def _f(k, v):
+        if k in keys:
+            return f(v)
+
+        return v
+
+    return Json(
+            obj_f = (lambda a:
+                     lambda x: { k : a(_f(k, v))
+                                 for (k, v) in x.items()} )
+        )
