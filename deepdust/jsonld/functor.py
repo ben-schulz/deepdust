@@ -109,7 +109,7 @@ def trans_values(f, keys=None):
         return Json(
             obj_f = (lambda a:
                      lambda x: { k : a(f(v))
-                                 for (k, v) in x.items } )
+                                 for (k, v) in x.items() } )
         )
 
     def _f(k, v):
