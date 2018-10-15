@@ -8,7 +8,17 @@ class Context:
 
         mapping = json.loads(mapping)['@context']
 
-        self.terms = { v : k
+
+        def _getid(v):
+
+            try:
+                return v['@id']
+
+            except (AttributeError, KeyError):
+                return v
+
+
+        self.terms = { _getid(v) : k
                         for (k, v) in mapping.items() }
 
         self.defns = { k : v
