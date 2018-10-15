@@ -19,7 +19,9 @@ def compact(jsonld, context=None):
     drop_null = functor.drop_properties(lambda k,v: None != v)
 
     drop_unmapped = functor.drop_properties(
-        lambda k,v: '@' == k[0] or k in _context.defns)
+        lambda k,v: ('@' == k[0]
+                     or k in _context.defns
+                     or model.is_iri(k)))
 
     result = (
         compact_props

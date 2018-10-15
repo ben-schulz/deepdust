@@ -2,6 +2,12 @@ import json
 
 import deepdust.jsonld.base as base
 
+def is_iri(x):
+
+    return (x.startswith('http:')
+            or x.startswith('https:')
+            or x.startswith('ftp:'))
+
 class Context:
 
     def __init__(self, mapping):
@@ -14,7 +20,7 @@ class Context:
             try:
                 return v['@id']
 
-            except (AttributeError, KeyError):
+            except (TypeError, AttributeError, KeyError):
                 return v
 
 
