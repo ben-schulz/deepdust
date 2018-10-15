@@ -14,25 +14,32 @@ def compact(jsonld, context=None):
     compact_types = functor.trans_values(
         lambda x: _context.terms.get(x, x), keys={'@type'})
 
-    nullify_nonetype = functor.Json(
-        null_f = lambda _: "null"
-        )
+    nullify_nonetype = functor.Json(null_f = lambda _: "null")
 
-    drop_null = functor.drop_properties(
-        lambda k,v: None != v)
+    drop_null = functor.drop_properties(lambda k,v: None != v)
 
     drop_unmapped = functor.drop_properties(
         lambda k,v: '@' == k[0] or k in _context.defns)
 
+    result = (
+            compact_props
 
-    result = (compact_props
-            .then(functor.squeeze
-                  .then(compact_types
-                        .then(drop_null)))).apply(ldobj)
+              .then(
+            functor.squeeze
 
-    result = drop_unmapped.apply(result)
+              .then(
+            compact_types
 
-    result = nullify_nonetype.apply(result)
+              .then(
+            drop_null
+
+              .then(
+            drop_unmapped
+
+              .then(
+            nullify_nonetype)))))
+
+    ).apply(ldobj)
 
     if '@id' in result and 2 > len(result):
         del(result['@id'])
