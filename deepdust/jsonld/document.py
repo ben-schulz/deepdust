@@ -8,9 +8,6 @@ def compact(jsonld, context=None):
 
     _context = model.Context(context or ldobj.get('@context'))
 
-    if '@id' in ldobj and 2 > len(ldobj):
-        del(ldobj['@id'])
-
     compact_props = functor.trans_props(
         lambda x: _context.terms.get(x, x))
 
@@ -21,10 +18,24 @@ def compact(jsonld, context=None):
         null_f = lambda _: "null"
         )
 
+    drop_null = functor.drop_properties(
+        lambda k,v: None != v)
+
+    drop_unmapped = functor.drop_properties(
+        lambda k,v: '@' == k[0] or k in _context.defns)
+
+
     result = (compact_props
             .then(functor.squeeze
                   .then(compact_types
-                        .then(nullify_nonetype)))).apply(ldobj)
+                        .then(drop_null)))).apply(ldobj)
+
+    result = drop_unmapped.apply(result)
+
+    result = nullify_nonetype.apply(result)
+
+    if '@id' in result and 2 > len(result):
+        del(result['@id'])
 
     if _context:
         result['@context'] = (
