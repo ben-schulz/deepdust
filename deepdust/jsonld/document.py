@@ -22,23 +22,13 @@ def compact(jsonld, context=None):
         lambda k,v: '@' == k[0] or k in _context.defns)
 
     result = (
-            compact_props
-
-              .then(
-            functor.squeeze
-
-              .then(
-            compact_types
-
-              .then(
-            drop_null
-
-              .then(
-            drop_unmapped
-
-              .then(
-            nullify_nonetype)))))
-
+        compact_props
+        .then(functor.squeeze
+        .then(compact_types
+        .then(drop_null
+        .then(drop_unmapped
+        .then(nullify_nonetype
+        )))))
     ).apply(ldobj)
 
     if '@id' in result and 2 > len(result):

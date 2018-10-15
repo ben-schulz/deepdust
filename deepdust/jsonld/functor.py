@@ -93,6 +93,7 @@ squeeze = Json(
     array_f = _squeeze
 )
 
+
 def trans_props(f):
 
     return Json(
@@ -101,6 +102,7 @@ def trans_props(f):
                               for (k,v) in x.items()}
                  ))
         )
+
 
 def trans_values(f, keys=None):
 
@@ -123,6 +125,7 @@ def trans_values(f, keys=None):
                      lambda x: { k : a(_f(k, v))
                                  for (k, v) in x.items() } )
         )
+
 
 def drop_properties(pred):
 
