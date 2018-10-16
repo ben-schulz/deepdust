@@ -106,11 +106,15 @@ def trans_props(f):
 
 def trans_values(f, pred=None):
 
-    def _f(k, v):
+    def _f_conditional(k, v):
         if pred(k, v):
             return f(v)
-
         return v
+
+    if not pred:
+        _f = f
+    else:
+        _f = _f_conditional
 
     return Json(
             obj_f = (lambda a:
