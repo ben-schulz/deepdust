@@ -12,7 +12,8 @@ def compact(jsonld, context=None):
         lambda x: _context.terms.get(x, x))
 
     compact_types = functor.trans_values(
-        lambda x: _context.terms.get(x, x), keys={'@type'})
+        lambda x: _context.terms.get(x, x),
+        pred=lambda k, v: k in {'@type'} )
 
     nullify_nonetype = functor.Json(null_f = lambda _: "null")
 

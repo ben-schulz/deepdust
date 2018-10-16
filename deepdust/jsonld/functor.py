@@ -104,10 +104,10 @@ def trans_props(f):
         )
 
 
-def trans_values(f, keys=None):
+def trans_values(f, pred=None):
 
     def _f(k, v):
-        if keys and k in keys:
+        if pred(k, v):
             return f(v)
 
         return v
