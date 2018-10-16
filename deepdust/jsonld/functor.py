@@ -106,16 +106,8 @@ def trans_props(f):
 
 def trans_values(f, keys=None):
 
-    if not keys:
-
-        return Json(
-            obj_f = (lambda a:
-                     lambda x: { k : a(f(v))
-                                 for (k, v) in x.items() } )
-        )
-
     def _f(k, v):
-        if k in keys:
+        if keys and k in keys:
             return f(v)
 
         return v
