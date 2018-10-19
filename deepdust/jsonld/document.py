@@ -24,6 +24,19 @@ def compact(jsonld, context=None):
                      or k in _context.defns
                      or model.is_iri(k)))
 
+    opt_empty_set = functor.trans_values(lambda x: [],
+        pred=lambda k,v: ('@set' in v
+                          and len(v['@set']) == 0))
+
+    opt_empty_set0 = functor.trans_values(lambda x: [],
+        pred=lambda k,v: ('@set' in v and "null" == v['@set']))
+
+    opt_empty_list = functor.trans_values(lambda x: [],
+        pred=lambda k,v: '@list' in v and not v['@list'])
+
+    opt_empty_list0 = functor.trans_values(lambda x: [],
+        pred=lambda k,v: '@list' in v and "null" == v['@list'])
+
     result = (
         compact_props
         .then(functor.squeeze
@@ -31,8 +44,11 @@ def compact(jsonld, context=None):
         .then(drop_null
         .then(drop_unmapped
         .then(nullify_nonetype
-        )))))
-    ).apply(ldobj)
+        .then(opt_empty_set
+        .then(opt_empty_set0
+        .then(opt_empty_list
+        .then(opt_empty_list0
+        )))))))))).apply(ldobj)
 
     if '@id' in result and 2 > len(result):
         del(result['@id'])
