@@ -8,6 +8,31 @@ def is_iri(x):
             or x.startswith('https:')
             or x.startswith('ftp:'))
 
+
+def is_empty_collection(x):
+
+    try:
+        _len = len(x)
+
+        if 0 == _len:
+            return True
+
+        try:
+            value = x.get('@list', None)
+
+            if value is None:
+                value = x['@set']
+
+            return ("null" == value or [] == value)
+
+        except (KeyError,AttributeError):
+            return False
+
+
+    except TypeError:
+        return False
+
+
 class Context:
 
     def __init__(self, mapping):
