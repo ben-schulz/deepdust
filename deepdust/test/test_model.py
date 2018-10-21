@@ -42,3 +42,42 @@ class TestModel(unittest.TestCase):
 
         self.assertFalse(model.is_empty_collection(x))
 
+
+    def test_ldtype_literal_list_is_list(self):
+
+        x = { 'prop': {'@list': [2,3]} }
+
+        result = model.ldtype('prop', x['prop'])
+
+        self.assertTrue(result is model.ldlist)
+
+
+    def test_ldtype_literal_list_is_list(self):
+
+        x = { 'prop': {'@set': [2,3]} }
+
+        result = model.ldtype('prop', x['prop'])
+
+        self.assertTrue(result is model.ldset)
+
+
+    def test_ldtype_context_defined_list_is_list(self):
+
+        x = { 'prop': [1,2] }
+
+        _ctx = """
+        {
+          "@context": {
+            "prop": {
+              "@container": "@list",
+              "@id": "http://example.com/prop"
+            }
+          }
+        }
+        """
+
+        ctx = model.Context(_ctx)
+
+        result = model.ldtype('prop', x['prop'], ctx=ctx)
+
+        self.assertTrue(result is model.ldlist)

@@ -2,6 +2,21 @@ import json
 
 import deepdust.jsonld.base as base
 
+class LdType:
+
+    def __init__(self, name):
+
+        self.name = name
+
+    def __str__(self):
+
+        return self.name
+
+
+ldlist = LdType('@list')
+ldset = LdType('@set')
+
+
 def is_iri(x):
 
     return (x.startswith('http:')
@@ -31,6 +46,25 @@ def is_empty_collection(x):
 
     except TypeError:
         return False
+
+
+def ldtype(k, v, ctx=None):
+
+    if isinstance(v, dict) and '@list' in v:
+        return ldlist
+
+    if isinstance(v, dict) and '@set' in v:
+        return ldset
+
+    if k in ctx and '@container' in ctx.defns[k]:
+
+        ctype = ctx.defns[k]['@container']
+        if '@list' == ctype:
+            return ldlist
+        if '@set' == ctype:
+            return ldset
+
+    return None
 
 
 class Context:
