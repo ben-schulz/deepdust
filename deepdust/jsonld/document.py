@@ -11,9 +11,21 @@ def compact(jsonld, context=None):
     compact_props = functor.trans_props(
         lambda x: _context.terms.get(x, x))
 
+    squeeze_lists = functor.trans_values(
+            lambda x: x[0],
+            pred=(lambda k, v:
+                  (model.ldtype(k, v, _context) is model.ldlist
+                   or k in _context.defns
+                   or k == '@type')
+                  and 1 == len(v))
+        )
+
     compact_types = functor.trans_values(
         lambda x: _context.terms.get(x, x),
-        pred=lambda k, v: k in {'@type'} )
+        pred=lambda k, v: isinstance(k, str)
+        and isinstance(v, str)
+        and k == '@type')
+
 
     nullify_nonetype = functor.Json(null_f = lambda _: "null")
 
@@ -26,11 +38,12 @@ def compact(jsonld, context=None):
 
 
     opt_empty_collection = functor.trans_values(lambda x: [],
-        pred=lambda k, v: model.is_empty_collection(v))
+        pred=(lambda k, v:
+              model.is_empty_collection(v)))
 
     result = (
         compact_props
-        .then(functor.squeeze
+        .then(squeeze_lists
         .then(compact_types
         .then(drop_null
         .then(drop_unmapped
@@ -42,7 +55,17 @@ def compact(jsonld, context=None):
         del(result['@id'])
 
     if _context:
-        result['@context'] = (
-            base.deserialize(context)['@context'])
+
+        if isinstance(result, list):
+            result[0]['@context'] = (
+                base.deserialize(context)['@context'])
+
+        else:
+            result['@context'] = (
+                base.deserialize(context)['@context'])
+
+
+    if isinstance(result, list) and 1 == len(result):
+        result = result[0]
 
     return str(result).replace("'", '"')

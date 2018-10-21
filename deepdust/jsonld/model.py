@@ -19,6 +19,9 @@ ldset = LdType('@set')
 
 def is_iri(x):
 
+    if not isinstance(x, str):
+        return False
+
     return (x.startswith('http:')
             or x.startswith('https:')
             or x.startswith('ftp:'))
@@ -55,6 +58,9 @@ def ldtype(k, v, ctx=None):
 
     if isinstance(v, dict) and '@set' in v:
         return ldset
+
+    if isinstance(v, dict) and '@type' in v:
+        return v['@type']
 
     if k in ctx and '@container' in ctx.defns[k]:
 
