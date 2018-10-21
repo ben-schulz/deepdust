@@ -152,3 +152,47 @@ class TestFunctor(unittest.TestCase):
             'x' : [1, 2, 3],
             'y' : [4, 5, 6]
         })
+
+
+    def test_then_applies_left_to_right(self):
+
+        f = functor.Json(
+            obj_f=(lambda a:
+                   (lambda x:
+                    { k: v+1 for (k,v) in x.items() } ))
+        )
+
+        g = functor.Json(
+            obj_f=(lambda a:
+                   (lambda x:
+                    { v: k for (k,v) in x.items() } ))
+        )
+
+        x = { 1: 2, 2: 3, 3:5, 4:7  }
+
+        result = f.then(g).apply(x)
+
+        self.assertEqual(result[3], 1)
+        self.assertEqual(result[4], 2)
+        self.assertEqual(result[6], 3)
+        self.assertEqual(result[8], 4)
+
+
+    def test_trans_values_filters_on_predicate(self):
+
+        f = functor.trans_values(
+            lambda x: x[0],
+            pred=(lambda k, v:
+                  isinstance(v, list) and 1 == len(v))
+        )
+
+        x = {
+            'prop1': ['value1'],
+            'prop2': [],
+            'prop3': 'value3'
+        }
+
+        result = f.apply(x)
+
+        self.assertEqual(result['prop1'], 'value1')
+        self.assertEqual(result['prop3'], 'value3')
