@@ -18,6 +18,24 @@ def compact(jsonld, context=None):
                   and 1 == len(v))
             )
 
+    normalize_empty_lists = functor.trans_values(
+        lambda x: [],
+        pred=lambda k, v:
+            ('@list' == k and 'null' == v)
+            or (isinstance(v, list)
+                and 1 == len(v)
+                and v[0] is None)
+
+    )
+
+    add_singleton_sets = functor.trans_values(
+        lambda x: [x],
+        pred=lambda k, v:
+            model.ldtype(k, v, _context) is model.ldset
+            and not isinstance(v, list)
+            and not isinstance(v, dict)
+    )
+
     compact_types = functor.trans_values(
         lambda x: _context.terms.get(x, x),
         pred=lambda k, v: isinstance(k, str)
@@ -27,13 +45,14 @@ def compact(jsonld, context=None):
 
     nullify_nonetype = functor.Json(null_f = lambda _: "null")
 
-    drop_null = functor.drop_properties(lambda k,v: None != v)
+    drop_null = functor.drop_properties(lambda k,v:
+                                        not v is None
+                                        and "null" != v)
 
     drop_unmapped = functor.drop_properties(
         lambda k,v: ('@' == k[0]
                      or k in _context.defns
                      or model.is_iri(k)))
-
 
     opt_empty_collection = functor.trans_values(lambda x: [],
         pred=(lambda k, v:
@@ -44,13 +63,22 @@ def compact(jsonld, context=None):
 
     result = (
         compact_props
+        .then(normalize_empty_lists
+        .then(drop_null
         .then(squeeze_lists
         .then(compact_types
-        .then(drop_null
+
         .then(drop_unmapped
+
         .then(nullify_nonetype
+
         .then(opt_empty_collection
-        ))))))).apply(ldobj)
+
+
+
+        .then(add_singleton_sets
+
+        ))))))))).apply(ldobj)
 
     if '@id' in result and 2 > len(result):
         del(result['@id'])
