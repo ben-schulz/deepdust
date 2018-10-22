@@ -35,6 +35,9 @@ def is_empty_collection(x):
         if 0 == _len:
             return True
 
+        if 1 == _len and isinstance(x, list) and not x[0]:
+            return True
+
         try:
             value = x.get('@list', None)
 
