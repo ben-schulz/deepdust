@@ -29,6 +29,13 @@ class TestModel(unittest.TestCase):
         self.assertTrue(model.is_empty_collection(x))
 
 
+    def test_set_object_with_only_null_is_empty(self):
+
+        x = { '@set': [None] }
+
+        self.assertTrue(model.is_empty_collection(x))
+
+
     def test_list_with_only_null_is_empty(self):
 
         x = [ None ]

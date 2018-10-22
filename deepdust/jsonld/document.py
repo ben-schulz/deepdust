@@ -14,11 +14,9 @@ def compact(jsonld, context=None):
     squeeze_lists = functor.trans_values(
             lambda x: x[0],
             pred=(lambda k, v:
-                  (model.ldtype(k, v, _context) is model.ldlist
-                   or k in _context.defns
-                   or k == '@type')
+                  (isinstance(v, list) or k == '@type')
                   and 1 == len(v))
-        )
+            )
 
     compact_types = functor.trans_values(
         lambda x: _context.terms.get(x, x),
@@ -39,7 +37,10 @@ def compact(jsonld, context=None):
 
     opt_empty_collection = functor.trans_values(lambda x: [],
         pred=(lambda k, v:
-              model.is_empty_collection(v)))
+              model.is_empty_collection(v)
+              and (model.ldtype(k,v,_context) is model.ldset
+                   or k in _context.defns))
+    )
 
     result = (
         compact_props
