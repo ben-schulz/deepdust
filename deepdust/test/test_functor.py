@@ -178,6 +178,30 @@ class TestFunctor(unittest.TestCase):
         self.assertEqual(result[8], 4)
 
 
+    def test_compose_applies_left_to_right(self):
+
+        f = functor.Json(
+            obj_f=(lambda a:
+                   (lambda x:
+                    { k: v+1 for (k,v) in x.items() } ))
+        )
+
+        g = functor.Json(
+            obj_f=(lambda a:
+                   (lambda x:
+                    { v: k for (k,v) in x.items() } ))
+        )
+
+        x = { 1: 2, 2: 3, 3:5, 4:7  }
+
+        result = functor.compose([f, g]).apply(x)
+
+        self.assertEqual(result[3], 1)
+        self.assertEqual(result[4], 2)
+        self.assertEqual(result[6], 3)
+        self.assertEqual(result[8], 4)
+
+
     def test_trans_values_filters_on_predicate(self):
 
         f = functor.trans_values(

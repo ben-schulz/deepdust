@@ -87,6 +87,22 @@ class Json:
             lambda x: other.apply(self.apply(x))))
 
 
+def compose(fs):
+
+    def _compose(fs):
+
+        if not fs:
+            return Json.Apply(lambda x: x)
+
+        this = fs.pop()
+        others = _compose(fs)
+
+        return this.then(others)
+
+    fs.reverse()
+    return _compose(fs)
+
+
 def _squeeze(a):
 
     def __squeeze(x):

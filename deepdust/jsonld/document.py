@@ -61,24 +61,18 @@ def compact(jsonld, context=None):
                    or k in _context.defns))
     )
 
-    result = (
-        compact_props
-        .then(normalize_empty_lists
-        .then(drop_null
-        .then(squeeze_lists
-        .then(compact_types
+    result = functor.compose([
+        compact_props,
+        normalize_empty_lists,
+        drop_null,
+        squeeze_lists,
+        compact_types,
+        drop_unmapped,
+        nullify_nonetype,
+        opt_empty_collection,
+        add_singleton_sets,
 
-        .then(drop_unmapped
-
-        .then(nullify_nonetype
-
-        .then(opt_empty_collection
-
-
-
-        .then(add_singleton_sets
-
-        ))))))))).apply(ldobj)
+    ]).apply(ldobj)
 
     if '@id' in result and 2 > len(result):
         del(result['@id'])
