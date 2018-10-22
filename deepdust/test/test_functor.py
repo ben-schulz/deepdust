@@ -196,3 +196,31 @@ class TestFunctor(unittest.TestCase):
 
         self.assertEqual(result['prop1'], 'value1')
         self.assertEqual(result['prop3'], 'value3')
+
+
+    def test_on_error_exception_contains_smallest_element(self):
+
+        f = functor.trans_values(
+            lambda x: x[0],
+            pred=(lambda k, v: 1 == len(v))
+        )
+
+        x = {
+            'prop': [
+                {'x': [1,2],
+                 'y': {'z': 256}
+                }
+            ]
+
+        }
+
+        try:
+            result = f.apply(x)
+
+        except functor.EvalError as e:
+
+            captured_value = e.expr.get('z')
+
+            self.assertTrue(isinstance(e.expr, dict))
+            self.assertEqual(captured_value, 256)
+            self.assertEqual(len(e.expr), 1)

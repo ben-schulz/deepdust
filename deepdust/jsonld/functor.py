@@ -57,7 +57,16 @@ class Json:
             raise base.JsonTypeError(msg)
         
         
-        return f(jelement)
+        try:
+            result = f(jelement)
+
+        except EvalError:
+            raise
+
+        except Exception as e:
+            raise EvalError(jelement) from e
+
+        return result
 
 
     class Apply:
@@ -107,8 +116,14 @@ def trans_props(f):
 def trans_values(f, pred=None):
 
     def _f_conditional(k, v):
+
         if pred(k, v):
-            return f(v)
+            try:
+                return f(v)
+
+            except Exception as e:
+                raise EvalError(v) from e
+
         return v
 
     if not pred:
@@ -130,3 +145,17 @@ def drop_properties(pred):
                  lambda x: { k:v for (k,v) in x.items()
                              if pred(k,v) })
     )
+
+
+class EvalError(Exception):
+
+    def __init__(self, expr):
+
+        self.expr = expr
+
+    def __str__(self):
+
+        base_error_name = type(self.__cause__).__name__
+
+        return ("{} raised when evaluating:\n\n{}"
+                .format(base_error_name, self.expr))
