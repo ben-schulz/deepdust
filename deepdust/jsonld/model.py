@@ -41,9 +41,12 @@ def is_empty_collection(x):
             if value is None:
                 value = x['@set']
 
-            return ("null" == value or [] == value)
+            if 1 == len(value) and not value[0]:
+                return True
 
-        except (KeyError,AttributeError):
+            return ("null" == value or not value)
+
+        except (KeyError, AttributeError):
             return False
 
 
