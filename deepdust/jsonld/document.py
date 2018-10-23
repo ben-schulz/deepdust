@@ -13,10 +13,11 @@ def compact(jsonld, context=None):
     result = functor.compose([
 
         compaction.contextualize_props(_context),
+        compaction.contextualize_types(_context),
+
         compaction.normalize_empty_lists,
         compaction.drop_null,
         compaction.squeeze_lists,
-        compaction.contextualize_types(_context),
         compaction.drop_unmapped(_context),
         compaction.nullify_nonetype,
         compaction.opt_empty_collection(_context),

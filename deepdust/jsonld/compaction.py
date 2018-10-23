@@ -42,11 +42,27 @@ def add_singleton_sets(context):
 
 def contextualize_types(context):
 
-    return functor.trans_values(
+    def _apply_context(k, v):
 
-        lambda x: context.terms.get(x, x),
+        if '@type' != k:
+            return v
 
-        pred=lambda k, v: k == '@type' and model.is_iri(v) )
+        if model.is_iri(v):
+            return context.terms.get(v, v)
+
+        elif isinstance(v, list):
+            return [ context.terms.get(y, y)
+                     for y in v ]
+        else:
+            msg = '@type must be single array of IRIs.'
+            raise TypeError(msg)
+
+
+    return functor.Json(
+        obj_f=lambda a:
+            lambda x: { k: a( _apply_context(k, v) )
+                        for (k, v) in x.items() }
+    )
 
 
 nullify_nonetype = functor.Json(null_f = lambda _: "null")
