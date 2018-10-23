@@ -47,7 +47,7 @@ def contextualize_types(context):
         lambda x: context.terms.get(x, x),
 
         pred=lambda k, v: isinstance(k, str)
-            and isinstance(v, str)
+            and model.is_iri(v)
             and k == '@type')
 
 
