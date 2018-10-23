@@ -91,7 +91,7 @@ class Context:
             try:
                 return v['@id']
 
-            except (TypeError, AttributeError, KeyError):
+            except (TypeError, KeyError):
                 return v
 
 
