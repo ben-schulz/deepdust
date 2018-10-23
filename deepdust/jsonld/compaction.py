@@ -46,9 +46,7 @@ def contextualize_types(context):
 
         lambda x: context.terms.get(x, x),
 
-        pred=lambda k, v: isinstance(k, str)
-            and model.is_iri(v)
-            and k == '@type')
+        pred=lambda k, v: k == '@type' and model.is_iri(v) )
 
 
 nullify_nonetype = functor.Json(null_f = lambda _: "null")
