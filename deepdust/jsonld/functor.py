@@ -76,6 +76,11 @@ class Json:
             self.apply = f
 
 
+        def then(self, other):
+
+            return Json.Apply(
+                lambda x: other.apply(self.apply(x)) )
+
     def abstract(self):
 
         return Json.Apply(lambda x: self.apply(x))
