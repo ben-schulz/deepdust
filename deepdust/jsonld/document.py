@@ -2,75 +2,25 @@ import deepdust.jsonld.base as base
 import deepdust.jsonld.functor as functor
 import deepdust.jsonld.model as model
 
+import deepdust.jsonld.compaction as compaction
+
 def compact(jsonld, context=None):
 
     ldobj = base.deserialize(jsonld)
 
     _context = model.Context(context or ldobj.get('@context'))
 
-    compact_props = functor.trans_props(
-        lambda x: _context.terms.get(x, x))
-
-    squeeze_lists = functor.trans_values(
-            lambda x: x[0],
-            pred=(lambda k, v:
-                  (isinstance(v, list) or k == '@type')
-                  and 1 == len(v))
-            )
-
-    normalize_empty_lists = functor.trans_values(
-        lambda x: [],
-        pred=lambda k, v:
-            ('@list' == k and 'null' == v)
-            or (isinstance(v, list)
-                and 1 == len(v)
-                and v[0] is None)
-
-    )
-
-    add_singleton_sets = functor.trans_values(
-        lambda x: [x],
-        pred=lambda k, v:
-            model.ldtype(k, v, _context) is model.ldset
-            and not isinstance(v, list)
-            and not isinstance(v, dict)
-    )
-
-    compact_types = functor.trans_values(
-        lambda x: _context.terms.get(x, x),
-        pred=lambda k, v: isinstance(k, str)
-        and isinstance(v, str)
-        and k == '@type')
-
-
-    nullify_nonetype = functor.Json(null_f = lambda _: "null")
-
-    drop_null = functor.drop_properties(lambda k,v:
-                                        not v is None
-                                        and "null" != v)
-
-    drop_unmapped = functor.drop_properties(
-        lambda k,v: ('@' == k[0]
-                     or k in _context.defns
-                     or model.is_iri(k)))
-
-    opt_empty_collection = functor.trans_values(lambda x: [],
-        pred=(lambda k, v:
-              model.is_empty_collection(v)
-              and (model.ldtype(k,v,_context) is model.ldset
-                   or k in _context.defns))
-    )
-
     result = functor.compose([
-        compact_props,
-        normalize_empty_lists,
-        drop_null,
-        squeeze_lists,
-        compact_types,
-        drop_unmapped,
-        nullify_nonetype,
-        opt_empty_collection,
-        add_singleton_sets,
+
+        compaction.contextualize_props(_context),
+        compaction.normalize_empty_lists,
+        compaction.drop_null,
+        compaction.squeeze_lists,
+        compaction.contextualize_types(_context),
+        compaction.drop_unmapped(_context),
+        compaction.nullify_nonetype,
+        compaction.opt_empty_collection(_context),
+        compaction.add_singleton_sets(_context)
 
     ]).apply(ldobj)
 
@@ -86,7 +36,6 @@ def compact(jsonld, context=None):
         else:
             result['@context'] = (
                 base.deserialize(context)['@context'])
-
 
     if isinstance(result, list) and 1 == len(result):
         result = result[0]
