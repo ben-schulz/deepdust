@@ -26,6 +26,8 @@ def compact(jsonld, context=None):
         compaction.shorten_prop_prefixes(_context),
         compaction.shorten_type_prefixes(_context),
 
+        compaction.squeeze_id_only_nodes(_context)
+
     ]).apply(ldobj)
 
 

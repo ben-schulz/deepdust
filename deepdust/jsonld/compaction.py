@@ -112,3 +112,15 @@ def shorten_type_prefixes(context):
     return functor.trans_values(
         _shorten,
         pred=lambda k, v: '@type' == k or '@id' == k)
+
+
+def squeeze_id_only_nodes(context):
+
+    return functor.trans_values(
+        lambda x: x['@id'],
+
+        pred=lambda k, v:
+
+            isinstance(v, dict)
+            and 1 == len(v)
+            and '@id' in v)
