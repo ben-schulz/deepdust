@@ -71,8 +71,10 @@ def ldtype(k, v, ctx=None):
     if k in ctx and '@container' in ctx.defns[k]:
 
         ctype = ctx.defns[k]['@container']
+
         if '@list' == ctype:
             return ldlist
+
         if '@set' == ctype:
             return ldset
 
