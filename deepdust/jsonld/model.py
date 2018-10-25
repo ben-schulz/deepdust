@@ -68,7 +68,7 @@ def ldtype(k, v, ctx=None):
     if isinstance(v, dict) and '@type' in v:
         return v['@type']
 
-    if k in ctx and '@container' in ctx.defns[k]:
+    if k in ctx.defns and '@container' in ctx.defns[k]:
 
         ctype = ctx.defns[k]['@container']
 
@@ -114,9 +114,6 @@ class Context:
         return len(self.defns)
 
 
-    def __contains__(self, key):
-
-        return key in self.defns.keys()
 
 
     def tojson(self):
