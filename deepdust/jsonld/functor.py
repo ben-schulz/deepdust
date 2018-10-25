@@ -124,11 +124,26 @@ squeeze = Json(
 )
 
 
-def trans_props(f):
+def trans_props(f, pred=None):
+
+    def _f_cond(k, v):
+
+        if pred(k, v):
+
+            return f(k)
+
+        return k
+
+
+    if pred:
+        _f = _f_cond
+
+    else:
+        _f = lambda k, v: f(k)
 
     return Json(
         obj_f = (lambda a:
-                 (lambda x: { f(k) : a(v)
+                 (lambda x: { _f(k, v) : a(v)
                               for (k,v) in x.items()}
                  ))
         )
