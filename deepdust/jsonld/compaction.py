@@ -124,3 +124,16 @@ def squeeze_id_only_nodes(context):
             isinstance(v, dict)
             and 1 == len(v)
             and '@id' in v)
+
+
+def squeeze_redundant_types(context):
+
+    return functor.trans_values(
+
+        lambda x: x.get('@value', x),
+
+        pred=lambda k, v:
+            isinstance(v, dict)
+            and k in context.defns
+            and context.get_type(k) is not None
+    )

@@ -87,7 +87,6 @@ class Context:
 
         mapping = json.loads(mapping)['@context']
 
-
         def _getid(v):
 
             try:
@@ -96,6 +95,8 @@ class Context:
             except (TypeError, KeyError):
                 return v
 
+
+        self.mapping = mapping
 
         self.terms = { _getid(v) : k
                         for (k, v) in mapping.items() }
@@ -125,8 +126,21 @@ class Context:
             return iri
 
         return "{}:{}".format( self.prefixes[prefix],
-                               iri[len(prefix):] )
+                               iri[ len(prefix): ] )
 
+
+    def get_type(self, term):
+
+        try:
+
+            defn = self.mapping[term]
+            typ = defn['@type']
+
+        except (KeyError, TypeError):
+
+            typ = None
+
+        return typ
 
 
     def __str__(self):
