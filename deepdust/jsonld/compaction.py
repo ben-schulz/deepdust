@@ -96,3 +96,19 @@ def opt_empty_collection(context):
 
 def shorten_prop_prefixes(context):
     return functor.trans_props(context.apply_prefix)
+
+
+def shorten_type_prefixes(context):
+
+    def _shorten(v):
+
+        if isinstance(v, list):
+
+            return [ context.apply_prefix(x)
+                     for x in v ]
+
+        return context.apply_prefix(v)
+
+    return functor.trans_values(
+        _shorten,
+        pred=lambda k, v: '@type' == k or '@id' == k)
