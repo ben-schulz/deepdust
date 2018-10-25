@@ -92,3 +92,7 @@ def opt_empty_collection(context):
               and ( model.ldtype(k, v, context) is model.ldset
                     or k in context.defns )
     )
+
+
+def shorten_prop_prefixes(context):
+    return functor.trans_props(context.apply_prefix)

@@ -103,6 +103,31 @@ class Context:
         self.defns = { k : v
                        for (k, v) in mapping.items() }
 
+        self.prefixes = { v : k for (k, v) in self.defns.items()
+                          if is_iri(v) }
+
+
+    def match_prefix(self, iri):
+
+        try:
+            return next(iter(x for x in self.prefixes
+                             if iri.startswith(x)))
+
+        except StopIteration:
+            return None
+
+
+    def apply_prefix(self, iri):
+
+        prefix = self.match_prefix(iri)
+
+        if not prefix:
+            return iri
+
+        return "{}:{}".format( self.prefixes[prefix],
+                               iri[len(prefix):] )
+
+
 
     def __str__(self):
 
@@ -112,8 +137,6 @@ class Context:
     def __len__(self):
 
         return len(self.defns)
-
-
 
 
     def tojson(self):

@@ -21,9 +21,12 @@ def compact(jsonld, context=None):
         compaction.drop_unmapped(_context),
         compaction.nullify_nonetype,
         compaction.opt_empty_collection(_context),
-        compaction.add_singleton_sets(_context)
+        compaction.add_singleton_sets(_context),
+
+        compaction.shorten_prop_prefixes(_context),
 
     ]).apply(ldobj)
+
 
     if '@id' in result and 2 > len(result):
         del(result['@id'])
