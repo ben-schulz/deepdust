@@ -85,7 +85,7 @@ class Context:
 
     class Term:
 
-        def __init__(self, term, defn, context):
+        def __init__(self, term, defn, context, prefixes=None):
 
             def _getdefn(v):
                 try:
@@ -97,9 +97,26 @@ class Context:
 
             def _getprefix(v):
 
-                if is_iri(v):
-                    return None
+                _is_iri = is_iri(v)
 
+                if _is_iri:
+
+                    if not prefixes:
+                        return None
+
+                    try:
+                        prefix = next( v for (k, v) in
+                                       prefixes.items()
+                                       if v.startswith(k) )
+
+                        suffix = v[ len(prefix):  ]
+
+                        return '{}:{}'.format(prefix, suffix)
+
+                    except StopIteration:
+                        return None
+
+                    
                 tokens = v.split(':')
 
                 if 2 > len(tokens):
@@ -157,12 +174,20 @@ class Context:
         self.prefixes = { v : k for (k, v) in self.defns.items()
                           if is_iri(v) }
 
+        self._terms = [ Context.Term(k, v,
+                                     mapping,
+                                     prefixes=self.prefixes)
+
+                        for (k, v) in mapping.items() ]
+
+
+
 
     def match_prefix(self, iri):
 
         try:
-            return next(iter(x for x in self.prefixes
-                             if iri.startswith(x)))
+            return next( x for x in self.prefixes
+                         if iri.startswith(x) )
 
         except StopIteration:
             return None
@@ -177,6 +202,21 @@ class Context:
 
         return "{}:{}".format( self.prefixes[prefix],
                                iri[ len(prefix): ] )
+
+
+    def get_term(self, name):
+
+        if self.match_prefix(name):
+            _name = self.apply_prefix(name)
+        else:
+            _name = name
+
+        try:
+            return next(t.name for t in self._terms
+                        if t.ident == _name)
+
+        except StopIteration:
+            return name
 
 
     def get_type(self, term):

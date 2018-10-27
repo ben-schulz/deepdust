@@ -173,3 +173,43 @@ class TestModel(unittest.TestCase):
         self.assertEqual('term3', term3.name)
         self.assertTrue(term3.prefix is None)
         self.assertEqual(term3.ident, term3.expanded_url)
+
+
+    def test_context_identifies_term_by_id(self):
+
+        context = model.Context("""
+        {
+          "@context": {
+            "ex": "http://example.com/",
+
+            "term1": {
+              "@type": "ex:Type1",
+              "@id": "ex:Thing1"
+            }
+          }
+        }
+        """)
+
+        result = context.get_term('ex:Thing1')
+
+        self.assertEqual('term1', result)
+
+
+    def test_context_identifies_term_by_id(self):
+
+        context = model.Context("""
+        {
+          "@context": {
+            "ex": "http://example.com/",
+
+            "term1": {
+              "@type": "ex:Type1",
+              "@id": "ex:Thing1"
+            }
+          }
+        }
+        """)
+
+        result = context.get_term('http://example.com/Thing1')
+
+        self.assertEqual('term1', result)
