@@ -83,6 +83,56 @@ def ldtype(k, v, ctx=None):
 
 class Context:
 
+    class Term:
+
+        def __init__(self, term, defn, context):
+
+            def _getdefn(v):
+                try:
+                    return v['@id']
+
+                except (TypeError, KeyError):
+                    return v
+
+
+            def _getprefix(v):
+
+                if is_iri(v):
+                    return None
+
+                tokens = v.split(':')
+
+                if 2 > len(tokens):
+                    return None
+
+                return tokens[0]
+
+
+            def _gettype(v):
+
+                try:
+                    if '@type' in v:
+                        return v['@type']
+
+                except (KeyError, TypeError):
+                    return v
+
+
+            self.name = term
+            self.ident = _getdefn(defn)
+            self.prefix = _getprefix(self.ident)
+            self.ldtype = _gettype(defn)
+
+            if self.prefix:
+                suffix = self.ident.split(':')[1]
+                
+                self.expanded_url = (
+                '{}{}'.format(context[self.prefix], suffix))
+
+            else:
+                self.expanded_url = self.ident                
+
+
     def __init__(self, mapping):
 
         mapping = json.loads(mapping)['@context']
