@@ -105,24 +105,6 @@ class TestModel(unittest.TestCase):
         self.assertTrue(result is model.ldlist)
 
 
-    
-    _context_for_test_term = base.deserialize(
-        """
-        {
-          "@context": {
-            "ex": "http://example.com/",
-
-            "term1": {
-              "@type": "ex:Type1",
-              "@id": "ex:Thing1"
-            },
-            "term2": "ex:Thing2",
-            "term3": "http://example.org/Thing3"
-          }
-        }
-        """)['@context']
-
-
     def test_term_identifies_all_parts_expanded_object(self):
 
         context = base.deserialize("""
