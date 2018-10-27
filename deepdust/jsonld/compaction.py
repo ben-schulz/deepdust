@@ -5,7 +5,7 @@ import deepdust.jsonld.functor as functor
 def contextualize_props(context):
 
     return functor.trans_props(
-        lambda x: context.terms.get(x, x) )
+        lambda x: context.get_term(x) )
 
 
 squeeze_lists = functor.trans_values(
@@ -48,10 +48,10 @@ def contextualize_types(context):
             return v
 
         if model.is_iri(v):
-            return context.terms.get(v, v)
+            return context.get_term(v)
 
         elif isinstance(v, list):
-            return [ context.terms.get(y, y)
+            return [ context.get_term(y)
                      for y in v ]
         else:
             msg = '@type must be single array of IRIs.'

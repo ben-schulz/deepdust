@@ -165,16 +165,13 @@ class Context:
 
         self.mapping = mapping
 
-        self.terms = { _getid(v) : k
-                        for (k, v) in mapping.items() }
-
         self.defns = { k : v
                        for (k, v) in mapping.items() }
 
         self.prefixes = { v : k for (k, v) in self.defns.items()
                           if is_iri(v) }
 
-        self._terms = [ Context.Term(k, v,
+        self.terms = [ Context.Term(k, v,
                                      mapping,
                                      prefixes=self.prefixes)
 
@@ -200,6 +197,9 @@ class Context:
         if not prefix:
             return iri
 
+        if prefix == iri:
+            return iri
+
         return "{}:{}".format( self.prefixes[prefix],
                                iri[ len(prefix): ] )
 
@@ -212,7 +212,7 @@ class Context:
             _name = name
 
         try:
-            return next(t.name for t in self._terms
+            return next(t.name for t in self.terms
                         if t.ident == _name)
 
         except StopIteration:
