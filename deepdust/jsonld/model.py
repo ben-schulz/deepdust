@@ -154,15 +154,6 @@ class Context:
 
         mapping = json.loads(mapping)['@context']
 
-        def _getid(v):
-
-            try:
-                return v['@id']
-
-            except (TypeError, KeyError):
-                return v
-
-
         self.mapping = mapping
 
         self.defns = { k : v
@@ -176,8 +167,6 @@ class Context:
                                      prefixes=self.prefixes)
 
                         for (k, v) in mapping.items() ]
-
-
 
 
     def match_prefix(self, iri):
@@ -217,6 +206,30 @@ class Context:
 
         except StopIteration:
             return name
+
+
+    def get_defn(self, name):
+
+        term = self.get_term(name)
+
+        if not term:
+            return None
+
+        defn = self.defns.get(term)
+
+        if not defn:
+            return None
+
+        if isinstance(defn, dict):
+
+            try:
+                return defn['@id']
+
+            except KeyError:
+                return defn
+
+
+        return defn
 
 
     def get_type(self, term):
