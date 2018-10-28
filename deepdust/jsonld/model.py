@@ -241,12 +241,18 @@ class Context:
         _term = self.get_term(term)
 
         try:
-
             defn = self.mapping[_term]
+
+        except KeyError:
+            defn = self.mapping.get(self.apply_prefix(term))
+
+        if not defn:
+            return None
+
+        try:
             typ = defn['@type']
 
         except (KeyError, TypeError):
-
             typ = None
 
         return typ
