@@ -5,7 +5,13 @@ import deepdust.jsonld.functor as functor
 def contextualize_props(context):
 
     return functor.trans_props(
-        lambda x: context.get_term(x) )
+
+        lambda x: context.get_term(x),
+
+        pred=lambda k, v:
+          not isinstance(v, dict)
+          or '@type' not in v
+          or context.get_type(k) == v['@type'] )
 
 
 squeeze_lists = functor.trans_values(
@@ -123,7 +129,7 @@ def squeeze_id_only_nodes(context):
 
             isinstance(v, dict)
             and 1 == len(v)
-            and '@id' in v)
+            and '@id' in v )
 
 
 def squeeze_redundant_types(context):
@@ -136,4 +142,5 @@ def squeeze_redundant_types(context):
             isinstance(v, dict)
             and k in context.defns
             and context.get_type(k) is not None
+            and context.get_type(k) == v['@type']
     )

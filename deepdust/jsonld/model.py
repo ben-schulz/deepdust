@@ -221,9 +221,11 @@ class Context:
 
     def get_type(self, term):
 
+        _term = self.get_term(term)
+
         try:
 
-            defn = self.mapping[term]
+            defn = self.mapping[_term]
             typ = defn['@type']
 
         except (KeyError, TypeError):
