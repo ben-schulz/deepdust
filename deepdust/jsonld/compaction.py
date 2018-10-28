@@ -148,3 +148,13 @@ def squeeze_redundant_types(context):
             and context.get_type(k) is not None
             and context.get_type(k) == v.get('@type')
     )
+
+sort_arrays_by_id = functor.Json(
+
+    array_f=lambda a: lambda x:
+
+        sorted( [ a(y) for y in x ],
+
+                key=lambda z: hasattr(z, 'get')
+                    and z.get('@id') )
+    )

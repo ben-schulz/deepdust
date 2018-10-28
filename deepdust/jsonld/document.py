@@ -31,6 +31,8 @@ def compact(jsonld, context=None):
         compaction.contextualize_props(_context),
         compaction.squeeze_redundant_types(_context),
 
+        compaction.sort_arrays_by_id
+
     ]).apply(ldobj)
 
 
