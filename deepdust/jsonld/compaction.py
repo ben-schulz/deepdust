@@ -116,8 +116,10 @@ def shorten_type_prefixes(context):
         return context.apply_prefix(v)
 
     return functor.trans_values(
+
         _shorten,
-        pred=lambda k, v: '@type' == k or '@id' == k)
+
+        pred=lambda k, v: '@type' == k or '@id' == k )
 
 
 def squeeze_id_only_nodes(context):
@@ -129,7 +131,9 @@ def squeeze_id_only_nodes(context):
 
             isinstance(v, dict)
             and 1 == len(v)
-            and '@id' in v )
+            and '@id' in v
+            and '@id' == context.get_type(k)
+    )
 
 
 def squeeze_redundant_types(context):
@@ -142,5 +146,5 @@ def squeeze_redundant_types(context):
             isinstance(v, dict)
             and k in context.defns
             and context.get_type(k) is not None
-            and context.get_type(k) == v['@type']
+            and context.get_type(k) == v.get('@type')
     )
