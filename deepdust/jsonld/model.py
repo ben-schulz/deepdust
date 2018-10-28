@@ -117,7 +117,11 @@ class Context:
                         return None
 
                     
-                tokens = v.split(':')
+                try:
+                    tokens = v.split(':')
+
+                except AttributeError:
+                    return None
 
                 if 2 > len(tokens):
                     return None
