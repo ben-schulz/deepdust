@@ -6,6 +6,17 @@ import deepdust.jsonld.model as model
 class TestModel(unittest.TestCase):
 
 
+    def test_unqualified_text_is_not_iri(self):
+
+        self.assertFalse(model.is_iri('this-is-not-an-IRI'))
+
+
+    def test_http_prefix_is_iri(self):
+
+        self.assertTrue(model.is_iri(
+            "http://example.org/test#chapter"))
+
+
     def test_empty_array_is_empty_collection(self):
 
         self.assertTrue(model.is_empty_collection([]))
@@ -213,3 +224,20 @@ class TestModel(unittest.TestCase):
         result = context.get_term('http://example.com/Thing1')
 
         self.assertEqual('term1', result)
+
+
+    def test_context_identifies_id_types(self):
+
+        context = model.Context("""
+        {
+        "@context": {
+            "ex": "http://example.org/vocab#",
+            "ex:contains": {"@type": "@id"}
+          }
+        }
+        """)
+
+        iri = "http://example.org/vocab#contains"
+        result = context.get_type(iri)
+
+        self.assertEqual('@id', result)
